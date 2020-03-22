@@ -16,7 +16,35 @@
 </head>
 
 <body >
-   
+    <style>
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: -999;
+        }
+        .bg img {
+/*
+            min-height: 100%;
+            width: 100%;
+*/
+          width: 50%;
+          
+          position: absolute;
+          left: 25%;
+          bottom: 10%;          
+        }
+    </style>
+       
+    <div class="bg" style="background-color: black">
+<!--        <img src="background.png">-->
+        <img src="ForgeLogo.png" style="">
+    </div> 
+    
+    <h1 style ="color: white">TEST</h1>
+    
   <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
   <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
@@ -81,14 +109,16 @@
     
     
     
-    function readDataBase(){
-      firebase.database().ref('MachineId').once('value').then(function (snapshot) {
-        console.log("member read done");
-
-        result = snapshot.val();
-
+    async function readDataBase(){
+      await firebase.database().ref('MachineId').once('value').then(function (snapshot) {
+        console.log("MachineId read done");
+        resultOfMachineId = snapshot.val();
       });
 
+      await firebase.database().ref('機器對應表').once('value').then(function (snapshot) {
+        console.log("機器對應表 read done");
+        機器對應表 = snapshot.val();
+      });      
     }
     
     
@@ -128,7 +158,8 @@
         ];
       
       firebase.database().ref("MachineId/SN00000001/U00000001")
-        .set(JSON.stringify(量測資料1))
+//        .set(JSON.stringify(量測資料1))
+        .set(量測資料1)
         .then(function(e){ 
           if (e) {
             console.log(e);
@@ -137,14 +168,17 @@
           }
         });
       firebase.database().ref("MachineId/SN00000001/U00000002")
-        .set(JSON.stringify(量測資料2))
+//        .set(JSON.stringify(量測資料2))
+        .set(量測資料2)      
         .then(function(e){ 
           if (e) {
             console.log(e);
           } else {
             console.log("Write to database OK")
           }
-        });      
+        }); 
+            
+      
     }
     
     

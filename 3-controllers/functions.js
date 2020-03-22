@@ -432,5 +432,5 @@ function 送出量測要求() {
     return 1;
   }
 
-  console.log("進行量測");
+  console.log("進行量測:"+$("#店面").val()+"-"+$("#機台").val()+"號機");
 }
