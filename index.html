@@ -143,62 +143,63 @@
       </li>
     </ul>
    
-  <div data-role="content" style="background-image: url('ForgeLogo.png'); 
-                                  background-repeat: no-repeat; 
-                                  background-position: bottom;
-                                  background-color: black;
-                                  ">    
-    <div id="進行量測Div">       
-      <div style="height: 15px"></div>   
-      <label for="店面" class="進行量測Label">選擇健身房:</label>
-      <select id="店面" class="進行量測Input NotoSansFont">
-        <option class="進行量測Input NotoSansFont" value="土城店">土城店</option>
-        <option class="進行量測Input NotoSansFont" value="三重店">三重店</option>
-        <option class="進行量測Input NotoSansFont" value="板橋店">板橋店</option>
-        <option class="進行量測Input NotoSansFont" value="永和店" selected>永和店</option>
-      </select>      
-      
-      <div style="height: 30px;"></div>
-      
-      <label for="機台" class="進行量測Label">選擇身體組成機號碼:</label>
-      <select id="機台" class="進行量測Input NotoSansFont">
-        <option class="進行量測Input NotoSansFont" value="1" selected>1</option>
-        <option class="進行量測Input NotoSansFont" value="2">2</option>        
-        <option id="機台數3" class="進行量測Input NotoSansFont" value="3">3</option>          
-      </select>      
-      
-      <div style="height: 30px;"></div>
-            
-      <a class="reply km-primary km-button-left" style="font-size: 18px; color: white; width:99%; " data-role="button" onclick="送出量測要求()">送出量測要求</a>
-      <br><br>
-      <div style="height: 20px"></div>      
-      
-    </div>
-  </div>
+    <div data-role="content" style="background-image: url('ForgeLogo.png'); 
+                                    background-repeat: no-repeat; 
+                                    background-position: bottom;
+                                    background-color: black;
+                                    ">    
+      <div id="進行量測Div">       
+        <div style="height: 15px"></div>   
+        <label for="店面" class="進行量測Label">選擇健身房:</label>
+        <select id="店面" class="進行量測Input NotoSansFont">
+          <option class="進行量測Input NotoSansFont" value="永和店" selected>永和店</option>         
+          <option class="進行量測Input NotoSansFont" value="土城店">土城店</option>
+          <option class="進行量測Input NotoSansFont" value="三重店">三重店</option>
+          <option class="進行量測Input NotoSansFont" value="板橋店">板橋店</option>
+        </select>      
 
-     <div id="量測記錄Div">
-      <div style="height: 15px"></div>
-      <span id="量測記錄title" class="進行量測Label">量測記錄</span>
-      <div style="height: 15px"></div>
+        <div style="height: 30px;"></div>
 
-      <ul data-role="listview" data-source="courseHistorySource" data-pull-to-refresh="false" data-template="nav-template" data-header-template="header-template" class="main-menu">
+        <label for="機台" class="進行量測Label">選擇身體組成機號碼:</label>
+        <select id="機台" class="進行量測Input NotoSansFont">
+          <option class="進行量測Input NotoSansFont" value="1" selected>1</option>
+          <option class="進行量測Input NotoSansFont" value="2">2</option>        
+          <option id="機台數3" class="進行量測Input NotoSansFont" value="3">3</option>          
+        </select>      
 
-        <script type="text/x-kendo-template" id="header-template">
-          <span class="km-icon km-#: value #"></span> #: value #
+        <div style="height: 30px;"></div>
+
+        <a class="reply km-primary km-button-left" style="font-size: 18px; color: white; width:99%; " data-role="button" onclick="送出量測要求()">送出量測要求</a>
+        <br><br>
+        <div style="height: 20px"></div>      
+
+      </div>
+   
+      <div id="量測記錄Div">
+        <div style="height: 15px"></div>
+        <span id="量測記錄title" class="進行量測Label">量測記錄</span>
+        <div style="height: 15px"></div>
+
+        <ul data-role="listview" data-source="courseHistorySource" data-pull-to-refresh="false" data-template="nav-template" data-header-template="header-template" class="main-menu">
+
+          <script type="text/x-kendo-template" id="header-template">
+            <span class="km-icon km-#: value #"></span> #: value #
+            </script>
+
+          <script type="text/x-kendo-template" id="nav-template">
+            <a href="#: url #" class="課程名稱">
+              <img src="#: 課程圖片 #" width="70" height="70" style="float:left;margin-right:10px"/>          
+              <p style="font-size:12px; color: gray; margin-top:-8px"> #: 課程編號 # </p>
+              <p style="font-size:16px; color: darkslategray; margin-top:-10px; font-weight:bold">#: 課程名稱 # </p>
+              <p style="font-size:12px; color: gray; margin-top:-10px">#: 老師時間 # </p>
+              <p style="font-size:12px; color: gray; margin-top:-10px;margin-bottom:-35px">#: 課程費用 # </p>            
+            </a>
           </script>
 
-        <script type="text/x-kendo-template" id="nav-template">
-          <a href="#: url #" class="課程名稱">
-            <img src="#: 課程圖片 #" width="70" height="70" style="float:left;margin-right:10px"/>          
-            <p style="font-size:12px; color: gray; margin-top:-8px"> #: 課程編號 # </p>
-            <p style="font-size:16px; color: darkslategray; margin-top:-10px; font-weight:bold">#: 課程名稱 # </p>
-            <p style="font-size:12px; color: gray; margin-top:-10px">#: 老師時間 # </p>
-            <p style="font-size:12px; color: gray; margin-top:-10px;margin-bottom:-35px">#: 課程費用 # </p>            
-          </a>
-        </script>
+        </ul>
+      </div>     
+    </div>  
 
-      </ul>
-    </div>        
     
     <h2 id="deleteMe"></h2>
 
