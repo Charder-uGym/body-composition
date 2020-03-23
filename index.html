@@ -49,7 +49,6 @@
         margin: 10px;
     }
 
-    
     .km-on-ios .km-header .km-navbar
     /* for data-title="打鐵健身- 身體組成自動量測系統" */
     {
@@ -63,25 +62,44 @@
       color: white;
     }
 
+    .km-on-android  .km-list > li {
+        background-color: rgb(250,250,250);
+        border-radius:10px;
+        margin: 10px;
+    }
+
+    .km-on-android .km-header .km-navbar
+    /* for data-title="打鐵健身- 身體組成自動量測系統" */
+    {
+      background-color: darkslategray;
+      /* deeppink; */
+      font-size: 16px;
+    }
+
+    .km-on-android .km-header .km-widget,
+    .km-on-android .km-header .km-view-title {
+      color: white;
+    }
+      
     .NotoSansFont {
       font-family: 'Noto Sans TC'; 
     }
     
     .進行量測Label {
       font-size: 18px;
-      font-weight: bold;
+/*      font-weight: bold;*/
       margin-left: 15px;
+      color: white;
     }
 
     .進行量測Input {
       font-size: 18px;
-      font-weight: bold;
-      margin-left: 15px;
-      margin-right: 15px;      
-      width: 92%;
-      color: darkslateblue;
+/*      font-weight: bold;*/
+      padding-left: 10px;
+/*      margin-right: 15px;      */
+      width: 100%;
+      color: darkslategray;
     }    
-    
     
     .課程名稱 {
       font-size: 18px;
@@ -107,24 +125,15 @@
         <a data-align="right" data-role="button" href="#forms" data-rel="" data-icon="contacts"></a>
         
         <span data-role="view-title"></span>
-        
-<!--        <span class="km-view-subtitle"></span>-->
-<!--        <a data-align="left" data-role="button" data-click="showSearch" data-click-on="down" data-icon="search"></a>-->
-     
+             
       </div>
-<!--
-      <div data-role="navbar" id="search" class="navbar-hidden">
-        <div data-align="right" id="demos-search-container" data-align="right">
-          <input type="search" id="demos-search" />
-        </div>
-      </div>
--->
+
     </header>
 
     <ul data-role="listview" data-type="group" style="margin-top: -25px" >
       <li >
         <ul>
-          <li style="padding: 0px; margin:0px;margin-top: -10px; border-radius: 0px; background-color: white" >
+          <li style="padding: 0px; margin:0px;margin-top: -10px; border-radius: 0px; background-color: black" >
             <ul data-role="buttongroup" data-index="0" data-select="切換量測頁面">
               <li style="width: 20%; border-radius: 0px;" >&nbsp 進行量測 &nbsp</li>
               <li style="width: 20%; border-radius: 0px;">查看量測紀錄</li>
@@ -133,16 +142,14 @@
         </ul>
       </li>
     </ul>
-       
+   
+  <div data-role="content" style="background-image: url('ForgeLogo.png'); 
+                                  background-repeat: no-repeat; 
+                                  background-position: bottom;
+                                  background-color: black;
+                                  ">    
     <div id="進行量測Div">       
-      <div style="height: 15px"></div>
-
-<!--
-      <div style="height: 15px"></div>
-      <span id="進行量測Label" class="進行量測Label">進行量測身體組成</span>
-      <div style="height: 15px"></div>
--->
-      
+      <div style="height: 15px"></div>   
       <label for="店面" class="進行量測Label">選擇健身房:</label>
       <select id="店面" class="進行量測Input NotoSansFont">
         <option class="進行量測Input NotoSansFont" value="土城店">土城店</option>
@@ -166,30 +173,8 @@
       <br><br>
       <div style="height: 20px"></div>      
       
-<!--
-  
-      <ul data-role="listview" data-source="navDataSource" data-pull-to-refresh="true" data-template="nav-template" data-header-template="header-template" class="main-menu">
-
-        <script type="text/x-kendo-template" id="header-template">
-          <span class="km-icon km-#: value #"></span> #: value #
-          </script>
-
-        <script type="text/x-kendo-template" id="nav-template">
-          <a href="#: url #" class="課程名稱">
-            <p style="font-size:16px; color: #: 繳費狀況顏色 #; border-width:2px; border-radius:5px;border-color:#: 繳費狀況顏色 # ; border-style:solid; float:right; margin-right:30px;padding-left:5px;padding-right:5px">#: 繳費狀況 # </p>
-            
-            <img src="#: 課程圖片 #" width="70" height="70" style="float:left;margin-right:10px"/>          
-            <p style="font-size:12px; color: gray; margin-top:-8px"> #: 課程編號 # </p>
-            <p style="font-size:16px; color: darkslategray; margin-top:-10px; font-weight:bold">#: 課程名稱 # </p>
-            <p style="font-size:12px; color: gray; margin-top:-10px">#: 老師時間 # </p>
-            <p style="font-size:12px; color: gray; margin-top:-10px;margin-bottom:-35px">#: 課程費用 # </p>            
-          </a>
-        </script>
-
-      </ul>
-      
--->
     </div>
+  </div>
 
      <div id="量測記錄Div">
       <div style="height: 15px"></div>
@@ -218,18 +203,11 @@
     <h2 id="deleteMe"></h2>
 
   </div>
-  
-  <div id="forms" data-role="view" data-title="個人資料" data-init="initForm" data-use-native-scrolling="true" style="font-family: 'Noto Sans TC'">
+   
 <!--
-    <header data-role="header">
-      <div data-role="navbar" id="normal" class="km-accent">
-        <span data-role="view-title"></span>
-      </div>
-    </header>
--->
+  <div id="forms" data-role="view" data-title="個人資料" data-init="initForm" data-use-native-scrolling="true" style="font-family: 'Noto Sans TC'">
     <img id="LINE頭像" src="" class="km-thumbnail" style="width: 10em; height: 10em; margin: 1em auto; display: block; float: none;"/>
        
-<!--    <div style="margin: 1em;" >* 表示必填欄位</div>-->
     <ul data-role="listview" data-style="inset">
       <li>
         <label class="km-label-above">姓名
@@ -261,49 +239,24 @@
         </label> 
         <span style="float:left ;margin-bottom: -1em; margin-top: -10px; margin-left: 5em">kg</span>
       </li>
-<!--
-      <li>
-        <label class="km-label-above">電話(必填，聯絡使用)
-          <input id="formUserPhone" class="NotoSansFont" type="text"/> 
-        </label> 
-      </li>
-      <li>
-        <label class="km-label-above">身分證號(必填，作為會員身份辨識，不用做其他用途)
-          <input id="formUserID" class="NotoSansFont" type="text"/> 
-        </label> 
-      </li>
-      <li>
-        <label class="km-label-above">緊急連絡人(必填，緊急聯絡使用)
-          <input id="formEmergencyContact" class="NotoSansFont" type="text"/> 
-        </label> 
-      </li>
-      <li>
-        <label class="km-label-above">緊急連絡電話(必填，緊急聯絡使用)
-          <input id="formEmergencyPhone" class="NotoSansFont" type="text"/> 
-        </label> 
-      </li>
-      <li>
-        <label class="km-label-above">地址(建議填寫，聯絡使用)
-          <input id="formUserAddr" class="NotoSansFont" type="text"/> 
-        </label> 
-      </li>                                                     
--->
     </ul>
     <div align="center">
       <a data-role="button" class="km-primary" style="color: white; margin:1em; padding-left:3em; padding-right:3em" onclick="更新資料()" >更新資料</a>
     </div>
     
   </div>  
+-->
 
+<!--
   <div data-id="courseDiv" data-role="layout" data-show="showDemoLayout" data-hide="removeView">
     <header data-role="header">
       <div data-role="navbar" class="km-accent">
         <a data-align="left" data-icon="arrow-w" href="#/" data-role="backbutton" data-transition="slide reverse"></a>
         <span data-role="view-title"></span>
-        <!--        <a data-align="right" id="source-code-button" data-icon="source-code" data-click="goToSourceCode" data-role="button" title="Show this demo source code">Source Code</a>-->
       </div>
     </header>
   </div>
+-->
 
 <!--  <script src="js/example-datasources.js"></script>-->
   <script>
