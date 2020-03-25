@@ -402,8 +402,8 @@ function checkInputParam() {
     alert("輸入參數錯誤");
     loadCourses = false;
 
-    // 等 #courseDiv 顯示後，再 hide()
-    setTimeout(function(){$("#courseDiv").hide();}, 500);
+    // 等 #mainDiv 顯示後，再 hide()
+    setTimeout(function(){$("#mainDiv").hide();}, 500);
 
     $("#errorMessage").css("display", "block"); 
     return false;

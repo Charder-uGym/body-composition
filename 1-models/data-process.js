@@ -302,7 +302,7 @@ function searchForCourse(value){
 }
 
 window.app = new kendo.mobile.Application($(document.body), {
-  layout: "courseDiv",
+  layout: "mainDiv",
   transition: "slide",
   skin: "nova",
   icon: {

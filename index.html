@@ -118,7 +118,7 @@
     <h3 class="NotoSansFont" style="margin-top: 2em; color: darkslategray; font-weight: bold">輸入參數發生錯誤，請洽管理員</h3>
   </div>
     
-  <div data-role="view" data-title="打鐵健身- 身體組成自動量測系統" style="font-family: 'Noto Sans TC'" id="courseDiv" data-layout="" data-show="nullForNow" data-init="initSearch">
+  <div data-role="view" data-title="打鐵健身- 身體組成自動量測系統" style="font-family: 'Noto Sans TC'" id="mainDiv" data-layout="" data-show="nullForNow" data-init="initSearch">
     <header data-role="header">
       <div data-role="navbar" id="normal" class="km-accent">
 
@@ -205,7 +205,6 @@
 
   </div>
    
-<!--
   <div id="forms" data-role="view" data-title="個人資料" data-init="initForm" data-use-native-scrolling="true" style="font-family: 'Noto Sans TC'">
     <img id="LINE頭像" src="" class="km-thumbnail" style="width: 10em; height: 10em; margin: 1em auto; display: block; float: none;"/>
        
@@ -246,10 +245,8 @@
     </div>
     
   </div>  
--->
 
-<!--
-  <div data-id="courseDiv" data-role="layout" data-show="showDemoLayout" data-hide="removeView">
+  <div data-id="mainDiv" data-role="layout" data-show="showDemoLayout" data-hide="removeView">
     <header data-role="header">
       <div data-role="navbar" class="km-accent">
         <a data-align="left" data-icon="arrow-w" href="#/" data-role="backbutton" data-transition="slide reverse"></a>
@@ -257,7 +254,6 @@
       </div>
     </header>
   </div>
--->
 
 <!--  <script src="js/example-datasources.js"></script>-->
   <script>
@@ -313,13 +309,38 @@
     // append: $("#機台").append('<option id="機台數3" class="進行量測Input NotoSansFont" value="3">3</option>' )
     // remove: $("#機台數3").remove()
     
+    courseHistorySource=[];    
+    
+    var courseTitle = {
+      "課程編號": "2020-03-25 13:56",              
+      "課程名稱": "永和店 一號機",
+      "老師時間": "10.5", 
+      "課程費用": "BBBB", 
+      "課程圖片": "MA801半身.png",              
+      "url": "2-views/report.html",//?courseId=" + courseHistory[ind][0],
+      "section": "A"             
+    };
+    courseHistorySource.push(courseTitle); 
+    
+    var courseTitle = {
+      "課程編號": "2020-03-11 14:23",              
+      "課程名稱": "永和店 一號機",
+      "老師時間": "10.5", 
+      "課程費用": "BBBB", 
+      "課程圖片": "MA801半身.png",              
+      "url": "2-views/report.html",//?courseId=" + courseHistory[ind][0],
+      "section": "A"             
+    };
+    courseHistorySource.push(courseTitle);       
+      
+    
     
     loadCourses = false; //declared in data-process.js
     $("#量測記錄Div").hide();
     
     // checkInputParam() 和 checkUserIdExist() 都是在 functions.js 定義
     if (checkInputParam()) checkUserIdExist();
-    courseHistorySource=[];    
+  
     //app.navigate('#forms');
         
   </script>
