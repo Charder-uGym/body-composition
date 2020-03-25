@@ -153,7 +153,7 @@
       <div id="進行量測Div">       
         <div style="height: 15px"></div>   
         <label for="店面" class="進行量測Label">選擇健身房:</label>
-        <select id="店面" class="進行量測Input NotoSansFont">
+        <select id="店面" class="進行量測Input NotoSansFont" >
           <option class="進行量測Input NotoSansFont" value="永和店" selected>永和店</option>         
           <option class="進行量測Input NotoSansFont" value="土城店">土城店</option>
           <option class="進行量測Input NotoSansFont" value="三重店">三重店</option>
@@ -305,6 +305,50 @@
     // remove: $("#機台數3").remove()
     
     courseHistorySource=[];    
+
+    var courseTitle = {
+      "課程編號": "2020-03-25 13:56",              
+      "課程名稱": "永和店 一號機",
+      "老師時間": "10.2", 
+      "課程費用": "", 
+      "課程圖片": "MA801半身.png",              
+      "url": "2-views/report.html",//?courseId=" + courseHistory[ind][0],
+      "section": "A"             
+    };
+    courseHistorySource.push(courseTitle); 
+    
+    var courseTitle = {
+      "課程編號": "2020-03-11 14:23",              
+      "課程名稱": "永和店 一號機",
+      "老師時間": "13.5", 
+      "課程費用": "", 
+      "課程圖片": "MA801半身.png",              
+      "url": "2-views/report.html",//?courseId=" + courseHistory[ind][0],
+      "section": "A"             
+    };
+    courseHistorySource.push(courseTitle);       
+      
+    var courseTitle = {
+      "課程編號": "2020-03-25 13:56",              
+      "課程名稱": "永和店 一號機",
+      "老師時間": "10.2", 
+      "課程費用": "", 
+      "課程圖片": "MA801半身.png",              
+      "url": "2-views/report.html",//?courseId=" + courseHistory[ind][0],
+      "section": "A"             
+    };
+    courseHistorySource.push(courseTitle); 
+    
+    var courseTitle = {
+      "課程編號": "2020-03-11 14:23",              
+      "課程名稱": "永和店 一號機",
+      "老師時間": "13.5", 
+      "課程費用": "", 
+      "課程圖片": "MA801半身.png",              
+      "url": "2-views/report.html",//?courseId=" + courseHistory[ind][0],
+      "section": "A"             
+    };
+    courseHistorySource.push(courseTitle);     
     
     var courseTitle = {
       "課程編號": "2020-03-25 13:56",              
@@ -328,7 +372,27 @@
     };
     courseHistorySource.push(courseTitle);       
       
+    var courseTitle = {
+      "課程編號": "2020-03-25 13:56",              
+      "課程名稱": "永和店 一號機",
+      "老師時間": "10.2", 
+      "課程費用": "", 
+      "課程圖片": "MA801半身.png",              
+      "url": "2-views/report.html",//?courseId=" + courseHistory[ind][0],
+      "section": "A"             
+    };
+    courseHistorySource.push(courseTitle); 
     
+    var courseTitle = {
+      "課程編號": "2020-03-11 14:23",              
+      "課程名稱": "永和店 一號機",
+      "老師時間": "13.5", 
+      "課程費用": "", 
+      "課程圖片": "MA801半身.png",              
+      "url": "2-views/report.html",//?courseId=" + courseHistory[ind][0],
+      "section": "A"             
+    };
+    courseHistorySource.push(courseTitle);      
     
     loadCourses = false; //declared in data-process.js
     $("#量測記錄Div").hide();
