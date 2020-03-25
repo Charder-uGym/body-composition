@@ -12,7 +12,7 @@
   
   <body>
 
-    <div data-role="view" data-init="initData"  data-title="進行量測" style="text-align: center;font-family: 'Noto Sans TC'" data-use-native-scrolling="true">
+    <div data-role="view" data-init="initData"  data-title="身體組成" style="text-align: center;font-family: 'Noto Sans TC'" data-use-native-scrolling="true">
   <!--
       <header data-role="header">
         <div data-role="navbar" id="normal" class="km-accent">
@@ -33,10 +33,14 @@
 
 
     </div>
-    
     <script>
-  
-    </script>
+      var hrefString = window.location.href;
+      var inputParamString = hrefString.split("?");
+      var inputParam = inputParamString[2].split("&")
+      var reportId = inputParamString[inputParamString.length-1].split("=")[1];
+      
+      console.log("ReportId",reportId);        
+    </script>   
     
     <script>
       //以下必須 remark 掉，不然會有問題
