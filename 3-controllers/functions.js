@@ -433,4 +433,5 @@ function 送出量測要求() {
   }
 
   console.log("進行量測:"+$("#店面").val()+"-"+$("#機台").val()+"號機");
+  app.navigate('2-views/courseDetail.html');
 }
