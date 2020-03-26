@@ -29,7 +29,7 @@
 
         <p style="font-size:18px; color: white; margin-left:20px; margin-top: 0px">2. 請按下按鈕，送出測量要求</p>      
         <div style="text-align: center">
-          <p id="測量限制" style="font-size:16px; color:gray; text-align:left; margin-left:40px;width:90%">**為讓更多人使用，距離上次量測須超過一小時，才能再度量測，謝謝您的合作</p>         
+          <p id="測量限制" style="font-size:16px; color:gray; text-align:left; margin-left:40px;width:80%">**為讓更多人使用，距離上次量測須超過一小時，才能再度量測，謝謝您的合作。</p>         
           <p id="上次測量時間" style="font-size:16px; color:gray; text-align:center">上次測量時間:</p>    
           <button id="開始測量按鈕" class="NotoSansFont" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">開始測量</button> 
           <button id="取消測量按鈕" class="NotoSansFont" style="margin-left: 50px; font-size: 18px; color: white; background-color:teal; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">取消測量</button>         
@@ -61,8 +61,7 @@
     
     <script>
       var 店面名稱=["永和店", "板橋店", "土城店", "錦州店",
-                   "三重店", "松山店", "府中店", "未來店",
-                   "未來店"                 
+                   "三重店", "松山店", "府中店"                 
                   ]; // 測試用，之後從 API 取得
 
       var 機器序號=["T00000001", "T00000002", "T00000003", "T00000004",
@@ -85,16 +84,20 @@
         for (var i=0; i<店面名稱.length;i++) {
           
           var 按鈕顏色 = (i==上次使用店面編號)?"red":"gray";
-          // 店面 0, 4, 8, 12, ...
+          // 店面 0, 3, 6, 9, ...
           if (i%3 == 0 || i%3 == 1 ) {
             var storeToadd = '<a id="'+"店面"+i.toString()+'" style="margin-left:20px;font-size: 18px; color: white; background-color:'+按鈕顏色+'; padding:10px;border-radius:8px" onclick="selectStore('+i.toString()+')">'+店面名稱[i]+'</a>';
             //console.log(storeToadd);
             $("#店面").append(storeToadd);        
-          } else { // 店面 1,2,5,6
+          } else { // 店面 1,2,4,5,7,8,...
             var storeToadd = '<a id="'+"店面"+i.toString()+'" style="margin-left:20px;font-size: 18px; color: white; background-color:'+按鈕顏色+'; padding:10px;border-radius:8px" onclick="selectStore('+i.toString()+')">'+店面名稱[i]+'</a>';
             $("#店面").append(storeToadd);      
             $("#店面").append("<br><br><br>");             
-          }  
+          }          
+        }
+        
+        if (店面名稱.length%3 != 2 ) {
+            $("#店面").append("<br><br><br>");   
         }
         
         var tmpTimeNow     = new Date(toISOStringWithTimeZone());
@@ -152,7 +155,7 @@
 
         
         if ( (tmpTimeNowInMs-tmpLastTimeInMs) < 60000 ) {
-          alert("為讓更多人使用，也是保障您的權益，距離上次量測須超過一小時，才能再度量測，謝謝您的合作");
+          alert("為讓更多人使用，也是保障您的權益，距離上次量測須超過一小時，才能再度量測，謝謝您的合作。");
           return;
         }
                 
@@ -165,7 +168,7 @@
          console.log("call API 送出要求測量");
 
          啟動模擬機();
-         $("#loadingProgressBar").data("kendoProgressBar").value(10);
+         $("#loadingProgressBar").data("kendoProgressBar").value(1);
          checkStatusInterval = setInterval( checkMeasurementStatus, 1000);      
            
        } else {
@@ -175,7 +178,7 @@
       
       var measurementStatusMsg="接受資料 ...";
       var measurementStatusMsgBank= [
-        "請站上機器", "量測體重 ...", "量測身體組成 50% ...", "量測身體組成 90% ...", "量測身體組成 完成", "資料上傳中 ...", "資料上傳完成"
+        "請站上機器", "量測體重", "量測身體組成 50%", "量測身體組成 90%", "量測身體組成 完成", "資料上傳中", "資料上傳完成"
       ]
       
       function 啟動模擬機(){    
@@ -233,10 +236,7 @@
           $("#查看報告Div").show();
         }
       }
-      
-      
-  
-      
+
     </script>
     
     <script>
