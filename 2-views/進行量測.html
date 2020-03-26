@@ -73,7 +73,7 @@
       var 上次使用店面編號 = localStorage.getItem("上次使用店面編號") || 0; // if null then 0
       var 上次量測時間    = localStorage.getItem("上次量測時間") || 0; // if null then 0  
       
-      var 上次測量時間Str = (上次量測時間==0)?"無":"上次量測時間:"+上次量測時間;
+      var 上次測量時間Str = (上次量測時間==0)?"2020-01-01T00:00:00+8:00":上次量測時間;
       
       var selectedStoreNum = 上次使用店面編號;
       
@@ -101,10 +101,9 @@
           }  
         }
         
-        var aaa = toISOStringWithTimeZone();
-        var tmpTime     = new Date(aaa);
+        var tmpTime     = new Date(上次測量時間Str);
         var tmpTimeInMs = tmpTime.getTime();        
-        $("#上次測量時間").text(aaa+" "+tmpTimeInMs.toString());
+        $("#上次測量時間").text(上次測量時間Str+" "+tmpTimeInMs.toString());
         $("#loadingProgressBar").kendoProgressBar({
           animation: 500,
           change: onChange,
@@ -214,7 +213,7 @@
         if (measurementStatusMsg == measurementStatusMsgBank[measurementStatusMsgBank.length-1]){
           clearInterval(checkStatusInterval);
           console.log("模擬完成");
-          var nowDate = new Date();
+          //var nowDate = new Date();
           var nowDateTimeStr = toISOStringWithTimeZone();
           localStorage.setItem("上次量測時間", nowDateTimeStr);
           localStorage.setItem("上次使用店面編號", selectedStoreNum);
