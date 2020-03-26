@@ -14,23 +14,20 @@
 
     <div data-role="view" data-init="initData"  data-title="進行量測" style="font-family:'Noto Sans TC';" data-use-native-scrolling="true" data-show="kendoViewReady" >
 
-      <div data-role="content" style="background-image: url('ForgeLogo.png'); 
-                                  background-repeat: no-repeat; 
-                                  background-position: bottom;
+      <div data-role="content" style="
                                   background-color: black;
                                   "> 
 
         <p style="font-size:18px; color: white; margin:20px">1. 請選擇 身體組成分析儀 所在的健身房</p>
 
-        <div id="店面">
+        <div id="店面" class="店面陣列">
 <!--
           <a class="" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px" onclick="selectStore(0)">永和店</a> 
           <a class="" style="font-size: 18px; color: white; background-color:gray; padding:10px;border-radius:8px" onclick="">板橋店</a> 
 -->
         </div>           
 
-        <p style="font-size:18px; color: white; margin:20px; margin-top: 50px">2. 請按下按鈕，送出測量要求</p>      
-        <div style="height: 20px"></div>
+        <p style="font-size:18px; color: white; margin:20px; margin-top: 0px">2. 請按下按鈕，送出測量要求</p>      
         <div style="text-align: center">
           <button id="開始測量按鈕" class="NotoSansFont" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">開始測量</button> 
           <button id="取消測量按鈕" class="NotoSansFont" style="margin-left: 50px; font-size: 18px; color: white; background-color:teal; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">取消測量</button>         
@@ -76,7 +73,7 @@
           
           var 按鈕顏色 = (i==上次使用店面編號)?"red":"gray";
           // 店面 0, 4, 8, 12, ...
-          if (i%4 == 0 || i%4 == 1 || i%4 == 2) {
+          if (i%3 == 0 || i%3 == 1 ) {
             var storeToadd = '<a id="'+"店面"+i.toString()+'" style="margin-left:20px;font-size: 18px; color: white; background-color:'+按鈕顏色+'; padding:10px;border-radius:8px" onclick="selectStore('+i.toString()+')">'+店面名稱[i]+'</a>';
             console.log(storeToadd);
             $("#店面").append(storeToadd);        
