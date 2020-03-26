@@ -12,27 +12,35 @@
   
   <body>
 
-    <div data-role="view" data-init="initData"  data-title="進行量測" style="text-align: center;font-family: 'Noto Sans TC'" data-use-native-scrolling="true">
-  <!--
-      <header data-role="header">
-        <div data-role="navbar" id="normal" class="km-accent">
-          <a data-align="left" data-role="button" onclick="app.navigate('#:back')" data-rel="" data-icon=""></a>           
-          <a data-align="right" data-role="button" href="#forms" data-rel="" data-icon="contacts"></a>       
-          <span data-role="view-title"></span>   
-        </div>
-      </header>   
-  -->
-  <!--
-      <a id="查看課程表header" class="km-primary km-button-center" style="width:100%; font-size: 18px; color: white; margin-left: 0px; " data-role="button" onclick="查看及收起課程表()"
-       >查看課程表 ▼</a>
-  -->
-       <div id="課表圖片Div" style="display:block">
-         <img id="課表圖片" src="CharderSampleReport.jpg" width="100%" onerror="this.src='索取課程表.png'"/>
-  <!--       <a class="km-primary km-button-center" style="width:100%; font-size: 18px; color: white; margin-left: 0px; " data-role="button" onclick="查看及收起課程表()">收起課程表 ▲</a>  -->
-       </div>        
+    <div data-role="view" data-init="initData"  data-title="進行量測" style="font-family:'Noto Sans TC';" data-use-native-scrolling="true"  >
+    
+    <div data-role="content" style="background-image: url('ForgeLogo.png'); 
+                                background-repeat: no-repeat; 
+                                background-position: bottom;
+                                background-color: black;
+                                "> 
+  
+      <p style="font-size:18px; color: white; margin:20px">1. 請選擇 身體組成分析儀 所在的健身房</p>
+      
+      <p style="font-size:18px; color: white; margin:20px">2. 請按下按鈕，送出測量要求</p>      
+      
+      <p style="font-size:18px; color: white; margin:20px">3. 請到 身體組成分析儀 上, 進行測量</p>       
 
-
+      <div style="height: 20px"></div>
+      <div style="text-align: center">
+      <a class="" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px" onclick="app.navigate('#mainDiv')">回主畫面</a> 
+      </div>
+      <p id="測量訊息" style="font-size:18px; color: white; margin:20px">量測中 ...</p>               
     </div>
+    
+
+      
+    </div>
+    
+    
+    
+    
+    
     
     <script>
   

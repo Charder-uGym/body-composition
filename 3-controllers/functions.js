@@ -223,7 +223,7 @@ function 更新資料() {
 //  if (!已經是會員) {
 //    loadCourses = true;
 //    getCourseData(navDataSource);
-//    getCourseHistory(courseHistorySource);      
+//    取得量測記錄(measurementSource);      
 //  }
   
   app.navigate('#:back');
@@ -285,7 +285,7 @@ async function checkUserIdExist() {
     
 //    loadCourses = true;
 //    getCourseData(navDataSource);
-//    getCourseHistory(courseHistorySource);    
+//    取得量測記錄(measurementSource);    
   }
 }
 

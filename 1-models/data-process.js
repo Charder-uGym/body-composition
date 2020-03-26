@@ -3,48 +3,14 @@ var isAndroid = kendo.support.mobileOS.android;
 
 var apiSite = (useLocalAPIs)?'http://localhost:5000':'https://charder.herokuapp.com/';
 
-var loadCourses = false;
-
-// override datasources
-navDataSource = new kendo.data.DataSource({
-  // 使用 data 的方法一
-  //  data: [
-  //      {
-  //        "課程名稱": "一起來運動",
-  //        "url": "2-views/courseDetail.html?courseId=U0001",
-  //        "section": "A"
-  //      },
-  //      {
-  //        "課程名稱": "運動運動",
-  //        "url": "2-views/pullToRefresh.html?courseId=U0002",
-  //        "section": "A"        
-  //      },
-  //      {
-  //        "課程名稱": "年後減肥大作戰",
-  //        "url": "2-views/courseDetail.html?courseId=U0003",
-  //        "section": "B"        
-  //      },
-  //      {
-  //        "課程名稱": "飛輪",
-  //        "url": "2-views/courseDetail.html?courseId=U0004",
-  //        "section": "B"        
-  //      },
-  //      {
-  //        "課程名稱": "瑜珈",
-  //        "url": "2-views/courseDetail.html?courseId=U0005",
-  //        "section": "C"        
-  //      },    
-  //    
-  //  ],
-  
-  // 使用 data 的方法二, transport
+var measurementSource = new kendo.data.DataSource({
   transport: {
-    read: function (data) { getCourseData(navDataSource); getCourseHistory(courseHistorySource);  }
+    read: function (data) { 取得量測記錄(measurementSource); }
   },
-//  sort: {
-//    field: "課程名稱",
-//    dir: "asc"
-//  },
+  sort: {
+    field: "量測記錄時間",
+    dir: "desc"
+  },
   requestStart: function () {
     kendo.ui.progress($("#loading"), true);
   },
@@ -54,34 +20,7 @@ navDataSource = new kendo.data.DataSource({
 
   schema: {
     total: function () {
-      console.log("scheme total");
-      取得經緯度();    
-      return 77;
-    }
-  },
-  serverPaging: true,
-  pageSize: 40,
-  //group: { field: "section" }
-})
-
-courseHistorySource = new kendo.data.DataSource({
-  transport: {
-    read: function (data) { getCourseHistory(courseHistorySource); }
-  },
-//  sort: {
-//    field: "課程名稱",
-//    dir: "asc"
-//  },
-  requestStart: function () {
-    kendo.ui.progress($("#loading"), true);
-  },
-  requestEnd: function () {
-    kendo.ui.progress($("#loading"), false);
-  },
-
-  schema: {
-    total: function () {
-      console.log("courseHistorySource scheme total");
+      console.log("measurementSource scheme total");
       //取得經緯度();    
       return 77;
     }
@@ -91,123 +30,46 @@ courseHistorySource = new kendo.data.DataSource({
   //group: { field: "section" }
 })
 
-searchDataSource = navDataSource;
-
-function getCourseData(data) {
-  console.log("getting data");
+function 取得量測記錄(data) {
+  console.log("getting CourseHistory");
   
-  if (loadCourses == false) return 1;
+  var 所有量測數據 = [
+    {
+      "ReportId": "00000001",
+      "量測記錄時間": "量測時間: 2020-01-25 13:56",              
+      "綜合評價": "綜合評價: 74.5",
+      "量測紀錄圖片": "MA801半身T.png",              
+    },
+    {
+      "ReportId": "00000002",
+      "量測記錄時間": "量測時間: 2020-02-23 14:32",              
+      "綜合評價": "綜合評價: 78.5",
+      "量測紀錄圖片": "MA801半身T.png",              
+    }      
+  ];
+
+  var dataTemp=[];
+  for (var i=0; i<所有量測數據.length; i++ ) {
+    var 卡片 = {
+      "量測記錄時間": 所有量測數據[i].量測記錄時間,              
+      "綜合評價":    所有量測數據[i].綜合評價,
+      "量測紀錄圖片": 所有量測數據[i].量測紀錄圖片,              
+      "url": "2-views/量測報告.html?reportId="+所有量測數據[i].ReportId,
+      "section": "A"             
+    };
+    dataTemp.push(卡片); 
+  }
+
+  data.success(dataTemp);
+
+  if (dataTemp.length==0) {
+    $("#量測記錄title").text("尚無量測記錄");
+  }else {
+    $("#量測記錄title").text("量測記錄");
+  }  
   
-  allDataReady = 0;
-  readCourses();
-
-  var checkDataReady = setInterval(function(){
-    if (allDataReady==4) {
-      //console.log(inCourse, courseData);
-      clearInterval(checkDataReady);
-      //console.log("Set up data for listview")
-      var dataTemp =[];
-      inCourse.forEach(function(course, index, array){
-        courseData.forEach(function(item, ind, arr){
-          if (course==item[0]) {
-            //console.log(course, ind);
-            var 課程圖片Url = ( courseData[ind][11] !="")?courseData[ind][11]:"picPlaceholder.png";
-            var courseTitle = {
-              "課程編號": courseData[ind][0],              
-              "課程名稱": courseData[ind][1],
-              "老師時間": courseData[ind][2] + " | " + courseData[ind][3], 
-              "課程費用": courseData[ind][5],  
-              "課程圖片": 課程圖片Url,
-              "繳費狀況": "未繳費",
-              "繳費狀況顏色": "coral",              
-              "url": "2-views/courseDetail.html?courseId=" + courseData[ind][0],
-              "section": "A"             
-            };   
-            
-            courseMember.forEach(function(course1, index1, array1){
-              //console.log(index1, courseData[ind][0]);
-              if (course1[0]==courseData[ind][0]) {
-                for (var i=1; i< course1.length;i++){
-                  //console.log(course1[i][3]);
-                  if (course1[i][3]== userId[1] && course1[i][1]=="已繳費") {
-                    courseTitle.繳費狀況 = "已繳費";
-                    courseTitle.繳費狀況顏色 = "darkslategray";
-                  } else if (course1[i][3]== userId[1] && course1[i][1]=="免費") {
-                    courseTitle.繳費狀況 = "免費";
-                    courseTitle.繳費狀況顏色 = "darkslategray";                    
-                  }
-                }
-              }
-            });           
-            
-            
-            dataTemp.push(courseTitle);
-
-          }
-        });
-      });
-   
-      console.log(dataTemp.length);
-      data.success(dataTemp);      
-      
-      if (dataTemp.length==0) {
-        $("#進行量測Label").text("尚無報名課程");
-      }else {
-        $("#進行量測Label").text("已報名課程");
-      }      
-
-    }
-    
-  }, 100);
-
+  return;
 }
-
-function getCourseHistory(data) {
-  console.log("getting CourseHistory", loadCourses);
-  
-  if (loadCourses == false) return 1;
-
-  var checkDataReady = setInterval(function(){
-    //console.log("in history", allDataReady);
-    if (allDataReady==4) {
-      clearInterval(checkDataReady);
-      //console.log("in xxx", myHistory)
-      var dataTemp =[];
-      myHistory.forEach(function(course, index, array){
-        console.log(course);
-        courseHistory.forEach(function(item, ind, arr){
-          if (course==item[0]) {
-            //console.log(course, ind);
-            var 課程圖片Url = ( item[11] !="" )?item[11]:"picPlaceholder.png";            
-            var courseTitle = {
-              "課程編號": item[0],              
-              "課程名稱": item[1],
-              "老師時間": item[2] + " | " + item[3], 
-              "課程費用": item[5], 
-              "課程圖片": 課程圖片Url,              
-              "url": "2-views/courseDetail.html?courseId=" + courseHistory[ind][0],
-              "section": "A"             
-            };
-            dataTemp.push(courseTitle);
-          }
-        });
-      });
-   
-      //console.log(dataTemp);
-      data.success( dataTemp);  
-      
-      if (dataTemp.length==0) {
-        $("#量測記錄title").text("尚無量測記錄");
-      }else {
-        $("#量測記錄title").text("量測記錄");
-      }      
-      
-    }
-    
-  }, 100);
-
-}
-
 
 function nullForNow(e) {
   console.log("nullForNow");
@@ -216,10 +78,10 @@ function nullForNow(e) {
 
 function removeView(e) {
   //console.log("removeView", e);  
-  if (reloadCourseNeeded) {
-    readCourses(); 
-    reloadCourseNeeded = false;
-  }
+  //if (reloadCourseNeeded) {
+  //  readCourses(); 
+  //  reloadCourseNeeded = false;
+  //}
   if (!e.view.element.data("persist")) {
     //console.log(e);
     
@@ -231,75 +93,25 @@ function removeView(e) {
 
 }
 
-function initSearch(e) {
-  console.log("initSearch");
-  var searchBox = e.view.element.find("#demos-search");
-
-  searchBox.on("input", function () {
-    searchForCourse(searchBox.val()); //, product);
-  });
-
-  searchBox.on("blur", function () {
-    //        if (searchBox.val() == "") {
-    //            hideSearch();
-    //        }
-    searchBox.val("");
-    searchForCourse("");
-    hideSearch();
-  });
-}
+//function initSearch(e) {
+//  console.log("initSearch");
+//  var searchBox = e.view.element.find("#demos-search");
+//
+//  searchBox.on("input", function () {
+//    searchForCourse(searchBox.val()); //, product);
+//  });
+//
+//  searchBox.on("blur", function () {
+//    //        if (searchBox.val() == "") {
+//    //            hideSearch();
+//    //        }
+//    searchBox.val("");
+//    searchForCourse("");
+//    hideSearch();
+//  });
+//}
 
 var desktop = !kendo.support.mobileOS;
-
-function showSearch() {
-  $("#normal").addClass("navbar-hidden");
-  $("#search").removeClass("navbar-hidden");
-  if (desktop) {
-    setTimeout(function () {
-      $("#demos-search").focus();
-    });
-  } else {
-    $("#demos-search").focus();
-  }
-}
-
-function hideSearch() {
-  $("#normal").removeClass("navbar-hidden");
-  $("#search").addClass("navbar-hidden");
-}
-
-function checkSearch(e) {
-  if (!searchDataSource.filter()) {
-    e.preventDefault();
-    this.replace([]);
-    $("#search-tooltip").show();
-  } else {
-    $("#search-tooltip").hide();
-  }
-}
-
-function searchForCourse(value){ 
-  if (value.length < 2) {
-        searchDataSource.filter(null);
-    } else {
-        var filter = { logic: "and", filters: []};
-        var words = value.split(" ");
-
-        for (var i = 0; i < words.length; i ++) {
-            var word = words[i];
-            filter.filters.push({
-                logic: "or",
-                filters: [
-                    //{ field: "section", operator: "contains", value: word },
-                    { field: "課程名稱", operator: "contains", value: word },
-                    //{ field: "title", operator: titleContains(word) }
-                ]
-            });
-        }
-
-        searchDataSource.filter(filter);
-    }
-}
 
 window.app = new kendo.mobile.Application($(document.body), {
   layout: "mainDiv",
