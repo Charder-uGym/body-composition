@@ -92,7 +92,7 @@
           // 店面 0, 4, 8, 12, ...
           if (i%3 == 0 || i%3 == 1 ) {
             var storeToadd = '<a id="'+"店面"+i.toString()+'" style="margin-left:20px;font-size: 18px; color: white; background-color:'+按鈕顏色+'; padding:10px;border-radius:8px" onclick="selectStore('+i.toString()+')">'+店面名稱[i]+'</a>';
-            console.log(storeToadd);
+            //console.log(storeToadd);
             $("#店面").append(storeToadd);        
           } else { // 店面 1,2,5,6
             var storeToadd = '<a id="'+"店面"+i.toString()+'" style="margin-left:20px;font-size: 18px; color: white; background-color:'+按鈕顏色+'; padding:10px;border-radius:8px" onclick="selectStore('+i.toString()+')">'+店面名稱[i]+'</a>';
@@ -215,9 +215,6 @@
           console.log("模擬完成");
           var nowDate = new Date();
           var nowDateTimeStr = toISOStringWithTimeZone();
-          var nowDateTimeArr = nowDateTimeStr.split("T");
-          nowDateTimeStr = nowDateTimeArr[0] + " " + nowDateTimeArr[1].substr(0, nowDateTimeArr[1].length);
-          console.log(nowDateTimeStr);
           localStorage.setItem("上次量測時間", nowDateTimeStr);
           localStorage.setItem("上次使用店面編號", selectedStoreNum);
           $("#查看報告Div").show();
