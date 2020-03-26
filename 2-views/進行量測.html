@@ -101,9 +101,10 @@
           }  
         }
         
-        var tmpTime     = new Date(上次測量時間Str);
+        var aaa = toISOStringWithTimeZone();
+        var tmpTime     = new Date(aaa);
         var tmpTimeInMs = tmpTime.getTime();        
-        $("#上次測量時間").text(上次測量時間Str+" "+tmpTimeInMs.toString());
+        $("#上次測量時間").text(aaa+" "+tmpTimeInMs.toString());
         $("#loadingProgressBar").kendoProgressBar({
           animation: 500,
           change: onChange,
