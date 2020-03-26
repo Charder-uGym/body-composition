@@ -29,7 +29,7 @@
 
         <p style="font-size:18px; color: white; margin-left:20px; margin-top: 0px">2. 請按下按鈕，送出測量要求</p>      
         <div style="text-align: center">
-          <p id="測量限制" style="font-size:16px; color:gray; text-align:left; margin-left:40px;width:90%">**為讓更多人使用，距離上次量測須超過一小時，才能再度量測</p>         
+          <p id="測量限制" style="font-size:16px; color:gray; text-align:left; margin-left:40px;width:90%">**為讓更多人使用，距離上次量測須超過一小時，才能再度量測，謝謝您的合作</p>         
           <p id="上次測量時間" style="font-size:16px; color:gray; text-align:center">上次測量時間:</p>    
           <button id="開始測量按鈕" class="NotoSansFont" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">開始測量</button> 
           <button id="取消測量按鈕" class="NotoSansFont" style="margin-left: 50px; font-size: 18px; color: white; background-color:teal; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">取消測量</button>         
@@ -81,11 +81,7 @@
       
       function kendoViewReady() {
         console.log( "ready!" );
-        
-        var tmpTime     = new Date(toISOStringWithTimeZone());
-        var tmpTimeInMs = tmpTime.getTime();
-        $("#debug1").text("現在時間:" +toISOStringWithTimeZone()+" "+tmpTimeInMs.toString());
-        
+                
         for (var i=0; i<店面名稱.length;i++) {
           
           var 按鈕顏色 = (i==上次使用店面編號)?"red":"gray";
@@ -101,9 +97,18 @@
           }  
         }
         
+        var tmpTimeNow     = new Date(toISOStringWithTimeZone());
+        var tmpTimeNowInMs = tmpTimeNow.getTime();
+        $("#debug1").text("現在時間:" +toISOStringWithTimeZone()+" "+tmpTimeNowInMs.toString());
+        
         var tmpTime     = new Date(上次測量時間Str);
-        var tmpTimeInMs = tmpTime.getTime();        
-        $("#上次測量時間").text(上次測量時間Str+" "+tmpTimeInMs.toString());
+        var tmpTimeInMs = tmpTime.getTime();  
+        var 轉換時間Array = 上次測量時間Str.split("T");
+        var 轉換時間Str   = "上次量測時間: "+轉換時間Array[0]+" "+轉換時間Array[1].substr(0, 轉換時間Array[1].length-6);
+        var tmpTimeInMs = (tmpTimeInMs==NaN)? "NaN":"TW";
+        
+        
+        $("#上次測量時間").text(轉換時間Str+"_"+tmpTimeInMs);
         $("#loadingProgressBar").kendoProgressBar({
           animation: 500,
           change: onChange,
@@ -138,19 +143,19 @@
         console.log("送出要求測量", selectedStoreNum, 機器序號[selectedStoreNum]);
         
         // 檢查距離上次量測時間
-        var nowTimeStr = new Date(toISOStringWithTimeZone());
-        var nowTimeInMs = nowTimeStr.getTime();
+        var tmpTimeNow     = new Date(toISOStringWithTimeZone());
+        var tmpTimeNowInMs = tmpTimeNow.getTime();
+        $("#debug1").text("現在時間:" +toISOStringWithTimeZone()+" "+tmpTimeNowInMs.toString());
         
+        var tmpLastTime     = new Date(上次測量時間Str);
+        var tmpLastTimeInMs = tmpLastTime.getTime();  
+
         
-        
-        if (上次量測時間==0) {
-          var lastTimeInMs = 0;         
-        } else {
-          var lastTime = new Date(上次量測時間);
-          var lastTimeInMs = lastTime.getTime();
+        if ( (tmpTimeNowInMs-tmpLastTimeInMs) < 60000 ) {
+          alert("為讓更多人使用，也是保障您的權益，距離上次量測須超過一小時，才能再度量測，謝謝您的合作");
+          return;
         }
- 
-        
+                
         
         if (confirm("為了您的權益，請檢查是在打鐵健身 "+店面名稱[selectedStoreNum]+" 身體組成分析儀 序號:"+機器序號[selectedStoreNum]+"上進行量測。\n\n序號可在機器上查對")) { 
          $("#開始測量按鈕").attr("disabled", true);
@@ -160,7 +165,7 @@
          console.log("call API 送出要求測量");
 
          啟動模擬機();
-         $("#loadingProgressBar").data("kendoProgressBar").value(1);
+         $("#loadingProgressBar").data("kendoProgressBar").value(10);
          checkStatusInterval = setInterval( checkMeasurementStatus, 1000);      
            
        } else {
@@ -206,14 +211,22 @@
       
       function checkMeasurementStatus(){
         console.log(measurementStatusMsg);
-        var pb = $("#loadingProgressBar").data("kendoProgressBar");
-        pb.value(pb.value() + 10);
         $("#測量訊息").text(measurementStatusMsg);  
+        if (measurementStatusMsg == measurementStatusMsgBank[0]) var pbValue = 20;
+        if (measurementStatusMsg == measurementStatusMsgBank[1]) var pbValue = 40;
+        if (measurementStatusMsg == measurementStatusMsgBank[2]) var pbValue = 60;
+        if (measurementStatusMsg == measurementStatusMsgBank[3]) var pbValue = 70;
+        if (measurementStatusMsg == measurementStatusMsgBank[4]) var pbValue = 80;
+        if (measurementStatusMsg == measurementStatusMsgBank[5]) var pbValue = 90;        
+        if (measurementStatusMsg == measurementStatusMsgBank[6]) var pbValue = 100;            
+        
+        var pb = $("#loadingProgressBar").data("kendoProgressBar");
+        pb.value(pbValue);
+
         
         if (measurementStatusMsg == measurementStatusMsgBank[measurementStatusMsgBank.length-1]){
           clearInterval(checkStatusInterval);
           console.log("模擬完成");
-          //var nowDate = new Date();
           var nowDateTimeStr = toISOStringWithTimeZone();
           localStorage.setItem("上次量測時間", nowDateTimeStr);
           localStorage.setItem("上次使用店面編號", selectedStoreNum);
