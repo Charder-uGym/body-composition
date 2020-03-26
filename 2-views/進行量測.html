@@ -27,14 +27,16 @@
 -->
         </div>           
 
-        <p style="font-size:18px; color: white; margin:20px; margin-top: 0px">2. 請按下按鈕，送出測量要求</p>      
+        <p style="font-size:18px; color: white; margin-left:20px; margin-top: 0px">2. 請按下按鈕，送出測量要求</p>      
         <div style="text-align: center">
+          <p id="測量限制" style="font-size:16px; color:gray; text-align:left; margin-left:40px;width:90%">**為讓更多人使用，距離上次量測須超過一小時，才能再度量測</p>         
+          <p id="上次測量時間" style="font-size:16px; color:gray; text-align:center">上次測量時間:</p>    
           <button id="開始測量按鈕" class="NotoSansFont" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">開始測量</button> 
           <button id="取消測量按鈕" class="NotoSansFont" style="margin-left: 50px; font-size: 18px; color: white; background-color:teal; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">取消測量</button>         
         </div>       
        
         <div id="第三步Div" style="display: none">
-          <p style="font-size:18px; color: white; margin:20px; margin-top: 50px">3. 請到 身體組成分析儀 上, 進行測量</p> 
+          <p style="font-size:18px; color: white; margin:20px; margin-top: 20px">3. 請到 身體組成分析儀 上，進行測量</p> 
           <p id="測量訊息" style="font-size:18px; color: white; margin-left:40px"></p>    
           
           <div id="loadingProgressBar" style="margin-left:20px; margin-right: 20px; width: 90%"></div>                
@@ -43,9 +45,14 @@
         </div>                
         
         <div id="查看報告Div" style="text-align: center; display: none">
+        <div style="height:20px"></div>
         <a class="" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px" onclick="app.navigate('2-views/量測報告-now.html?reportId=')">查看報告</a> 
         </div>
              
+        <div style="height: 50px"></div>        
+        <!-- Debug on phone -->
+        <p id="debug1" style="font-size:18px; color: white; margin-left:40px"></p>           
+        <p id="debug2" style="font-size:18px; color: white; margin-left:40px"></p>          
       </div>     
     </div>
     
@@ -61,13 +68,20 @@
                   ]; // 測試用，之後從 API 取得      
       
       var 上次使用店面編號 = localStorage.getItem("上次使用店面編號") || 0; // if null then 0
-      var 上次量測時間    = localStorage.getItem("上次量測時間") || 0; // if null then 0      
+      var 上次量測時間    = localStorage.getItem("上次量測時間") || 0; // if null then 0  
+      
+      var 上次測量時間Str = (上次量測時間==0)?"無":"上次量測時間:"+上次量測時間;
+      
       var selectedStoreNum = 上次使用店面編號;
       
 
       
       function kendoViewReady() {
         console.log( "ready!" );
+        
+        var tmpTime     = new Date(toISOStringWithTimeZone());
+        var tmpTimeInMs = tmpTime.getTime();
+        $("#debug1").text("現在時間:" +toISOStringWithTimeZone()+" "+tmpTimeInMs.toString());
         
         for (var i=0; i<店面名稱.length;i++) {
           
@@ -84,7 +98,10 @@
           }  
         }
         
-        var aaa=$("#loadingProgressBar").kendoProgressBar({
+        var tmpTime     = new Date(上次測量時間Str);
+        var tmpTimeInMs = tmpTime.getTime();        
+        $("#上次測量時間").text(上次測量時間Str+" "+tmpTimeInMs.toString());
+        $("#loadingProgressBar").kendoProgressBar({
           animation: 500,
           change: onChange,
           complete: onComplete
@@ -116,20 +133,33 @@
       var checkStatusInterval;
       function 送出要求測量(){
         console.log("送出要求測量", selectedStoreNum, 機器序號[selectedStoreNum]);
-         if (confirm("為了您的權益，請檢查是在打鐵健身 "+店面名稱[selectedStoreNum]+" 身體組成分析儀 序號:"+機器序號[selectedStoreNum]+"上進行量測。\n\n序號可在機器上查對")) { 
-           $("#開始測量按鈕").attr("disabled", true);
-           $("#開始測量按鈕").css("background-color", "gray");           
-           $("#第三步Div").show();
-           $("#測量訊息").text("接受資料");
-           console.log("call API 送出要求測量");
+        
+        // 檢查距離上次量測時間
+        var nowTimeInMs = Date.now();
+        
+        if (上次量測時間==0) {
+          var lastTimeInMs = 0;         
+        } else {
+          var lastTime = new Date(上次量測時間);
+          var lastTimeInMs = lastTime.getTime();
+        }
+ 
+        
+        
+        if (confirm("為了您的權益，請檢查是在打鐵健身 "+店面名稱[selectedStoreNum]+" 身體組成分析儀 序號:"+機器序號[selectedStoreNum]+"上進行量測。\n\n序號可在機器上查對")) { 
+         $("#開始測量按鈕").attr("disabled", true);
+         $("#開始測量按鈕").css("background-color", "gray");           
+         $("#第三步Div").show();
+         $("#測量訊息").text("接受資料");
+         console.log("call API 送出要求測量");
+
+         啟動模擬機();
+         $("#loadingProgressBar").data("kendoProgressBar").value(1);
+         checkStatusInterval = setInterval( checkMeasurementStatus, 1000);      
            
-           啟動模擬機();
-           $("#loadingProgressBar").data("kendoProgressBar").value(1);
-           checkStatusInterval = setInterval( checkMeasurementStatus, 1000);      
-           
-         } else {
-            console.log("放棄測量");
-         }
+       } else {
+          console.log("放棄測量");
+       }
       }  
       
       var measurementStatusMsg="接受資料 ...";
@@ -149,7 +179,7 @@
         //setTimeout( (() => clearInterval(checkStatusInterval)), 14100);           
       }
       
-      function test() {
+      function toISOStringWithTimeZone() {
           var nowDate = new Date();        
           var tzo = - nowDate.getTimezoneOffset(),
               dif = tzo >= 0 ? '+' : '-',
@@ -178,7 +208,7 @@
           clearInterval(checkStatusInterval);
           console.log("模擬完成");
           var nowDate = new Date();
-          var nowDateTimeStr = test();
+          var nowDateTimeStr = toISOStringWithTimeZone();
           var nowDateTimeArr = nowDateTimeStr.split("T");
           nowDateTimeStr = nowDateTimeArr[0] + " " + nowDateTimeArr[1].substr(0, nowDateTimeArr[1].length-6);
           console.log(nowDateTimeStr);
