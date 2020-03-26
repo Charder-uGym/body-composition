@@ -101,7 +101,7 @@
       color: darkslategray;
     }    
     
-    .課程名稱 {
+    .量測記錄卡片 {
       font-size: 18px;
       margin-left: 15px;
 
@@ -196,12 +196,12 @@
             </script>
 
           <script type="text/x-kendo-template" id="nav-template">
-            <a href="#: url #" class="課程名稱" >
-              <img src="#: 課程圖片 #" width="70" height="70" style="float:left;margin-right:10px"/>          
-              <p style="font-size:12px; color: black; margin-top:-8px"> #: 課程編號 # </p>
-              <p style="font-size:16px; color: black; margin-top:-10px; font-weight:bold">#: 課程名稱 # </p>
-              <p style="font-size:12px; color: black; margin-top:-10px">#: 老師時間 # </p>
-              <p style="font-size:12px; color: black; margin-top:-10px;margin-bottom:-35px">#: 課程費用 # </p> 
+            <a href="#: url #" class="量測記錄卡片" >
+              <img src="#: 量測紀錄圖片 #" width="50" height="50" style="float:left;margin-right:10px"/>          
+              <p style="font-size:12px; color: black; margin-top:-8px"> #: 量測記錄時間 # </p>
+              <span style="font-size:16px; color: black; margin-top:-10px; font-weight:bold">#: 綜合評價 # </span>
+              <span style="font-size:14px; color: black; margin-top:-10px; font-weight:bold">/100</span>
+              <span style="font-size:16px; color: black; margin-top:-10px; font-weight:bold">分</span> 
             </a>
           </script>
         </ul>
@@ -315,94 +315,31 @@
     
     courseHistorySource=[];    
 
-    var courseTitle = {
-      "課程編號": "2020-03-25 13:56",              
-      "課程名稱": "永和店 一號機",
-      "老師時間": "10.2", 
-      "課程費用": "", 
-      "課程圖片": "MA801半身T.png",              
-      "url": "2-views/量測報告.html?reportId=001", //
-      "section": "A"             
-    };
-    courseHistorySource.push(courseTitle); 
+    var 所有量測數據 = [
+      {
+        "ReportId": "00000001",
+        "量測記錄時間": "量測時間: 2020-01-25 13:56",              
+        "綜合評價": "綜合評價: 74.5",
+        "量測紀錄圖片": "MA801半身T.png",              
+      },
+      {
+        "ReportId": "00000002",
+        "量測記錄時間": "量測時間: 2020-02-23 14:32",              
+        "綜合評價": "綜合評價: 78.5",
+        "量測紀錄圖片": "MA801半身T.png",              
+      }      
+    ];
     
-    var courseTitle = {
-      "課程編號": "2020-03-11 14:23",              
-      "課程名稱": "永和店 一號機",
-      "老師時間": "13.5", 
-      "課程費用": "", 
-      "課程圖片": "MA801半身T.png",              
-      "url": "2-views/量測報告.html?reportId=002", //
-      "section": "A"             
-    };
-    courseHistorySource.push(courseTitle);       
-      
-    var courseTitle = {
-      "課程編號": "2020-03-25 13:56",              
-      "課程名稱": "永和店 一號機",
-      "老師時間": "10.2", 
-      "課程費用": "", 
-      "課程圖片": "MA801半身T.png",              
-      "url": "2-views/量測報告.html?reportId=003", //
-      "section": "A"             
-    };
-    courseHistorySource.push(courseTitle); 
-    
-    var courseTitle = {
-      "課程編號": "2020-03-11 14:23",              
-      "課程名稱": "永和店 一號機",
-      "老師時間": "13.5", 
-      "課程費用": "", 
-      "課程圖片": "MA801半身T.png",              
-      "url": "2-views/量測報告.html?reportId=004", //
-      "section": "A"             
-    };
-    courseHistorySource.push(courseTitle);     
-    
-    var courseTitle = {
-      "課程編號": "2020-03-25 13:56",              
-      "課程名稱": "永和店 一號機",
-      "老師時間": "10.2", 
-      "課程費用": "", 
-      "課程圖片": "MA801半身T.png",              
-      "url": "2-views/量測報告.html?reportId=005", //
-      "section": "A"             
-    };
-    courseHistorySource.push(courseTitle); 
-    
-    var courseTitle = {
-      "課程編號": "2020-03-11 14:23",              
-      "課程名稱": "永和店 一號機",
-      "老師時間": "13.5", 
-      "課程費用": "", 
-      "課程圖片": "MA801半身T.png",              
-      "url": "2-views/量測報告.html?reportId=006", //
-      "section": "A"             
-    };
-    courseHistorySource.push(courseTitle);       
-      
-    var courseTitle = {
-      "課程編號": "2020-03-25 13:56",              
-      "課程名稱": "永和店 一號機",
-      "老師時間": "10.2", 
-      "課程費用": "", 
-      "課程圖片": "MA801半身T.png",              
-      "url": "2-views/量測報告.html?reportId=007", //
-      "section": "A"             
-    };
-    courseHistorySource.push(courseTitle); 
-    
-    var courseTitle = {
-      "課程編號": "2020-03-11 14:23",              
-      "課程名稱": "永和店 一號機",
-      "老師時間": "13.5", 
-      "課程費用": "", 
-      "課程圖片": "MA801半身.png",              
-      "url": "2-views/量測報告.html?reportId=008", //
-      "section": "A"             
-    };
-    courseHistorySource.push(courseTitle);      
-    
+    for (var i=0; i<所有量測數據.length; i++ ) {
+      var 卡片 = {
+        "量測記錄時間": 所有量測數據[i].量測記錄時間,              
+        "綜合評價":    所有量測數據[i].綜合評價,
+        "量測紀錄圖片": 所有量測數據[i].量測紀錄圖片,              
+        "url": "2-views/量測報告.html?reportId="+所有量測數據[i].ReportId,
+        "section": "A"             
+      };
+      courseHistorySource.push(卡片); 
+    }
     loadCourses = false; //declared in data-process.js
     //$("#量測記錄Div").hide();
     $("#進行量測Div").hide();

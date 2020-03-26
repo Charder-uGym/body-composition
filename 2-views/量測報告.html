@@ -35,7 +35,12 @@
     </div>
     
     <script>
-  
+      var hrefString = window.location.href;
+      var inputParamString = hrefString.split("?");
+      var inputParam = inputParamString[2].split("&")
+      var reportId = inputParamString[inputParamString.length-1].split("=")[1];
+      
+      console.log(reportId);
     </script>
     
     <script>
