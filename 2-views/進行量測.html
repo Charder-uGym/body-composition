@@ -49,10 +49,13 @@
         <a class="" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px" onclick="app.navigate('2-views/量測報告-now.html?reportId=')">查看報告</a> 
         </div>
              
-        <div style="height: 50px"></div>        
+        <div style="height: 50px"></div>     
+           
         <!-- Debug on phone -->
-        <p id="debug1" style="font-size:18px; color: white; margin-left:40px"></p>           
-        <p id="debug2" style="font-size:18px; color: white; margin-left:40px"></p>          
+        <hr>
+        <p id="debug1" style="font-size:14px; color: gray; margin-left:20px"></p>           
+        <p id="debug2" style="font-size:14px; color: gray; margin-left:20px"></p>   
+               
       </div>     
     </div>
     
@@ -135,7 +138,10 @@
         console.log("送出要求測量", selectedStoreNum, 機器序號[selectedStoreNum]);
         
         // 檢查距離上次量測時間
-        var nowTimeInMs = Date.now();
+        var nowTimeStr = new Date(toISOStringWithTimeZone());
+        var nowTimeInMs = nowTimeStr.getTime();
+        
+        
         
         if (上次量測時間==0) {
           var lastTimeInMs = 0;         
@@ -210,7 +216,7 @@
           var nowDate = new Date();
           var nowDateTimeStr = toISOStringWithTimeZone();
           var nowDateTimeArr = nowDateTimeStr.split("T");
-          nowDateTimeStr = nowDateTimeArr[0] + " " + nowDateTimeArr[1].substr(0, nowDateTimeArr[1].length-6);
+          nowDateTimeStr = nowDateTimeArr[0] + " " + nowDateTimeArr[1].substr(0, nowDateTimeArr[1].length);
           console.log(nowDateTimeStr);
           localStorage.setItem("上次量測時間", nowDateTimeStr);
           localStorage.setItem("上次使用店面編號", selectedStoreNum);
