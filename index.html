@@ -222,6 +222,12 @@
 
       <ul data-role="listview" data-style="inset">
         <li>
+          <label class="km-label-above">預設常用健身房
+            <select id="預設常用健身房" type="text" class="NotoSansFont">
+            </select>
+          </label>
+        </li>       
+        <li>
           <label class="km-label-above">姓名
               <input id="formUserName" type="text" class="NotoSansFont"/>
           </label>
@@ -337,6 +343,23 @@
     var inputParam = inputParamString.split("&");
     var displayName, userId, pictureUrl;
     var inputError = false;
+    
+    var 預設常用健身房 = "永和店";
+    
+    var 店面名稱=["永和店", "板橋店", "土城店", "錦州店",
+                 "三重店", "松山店", "府中店"                 
+                ]; // 測試用，之後從 API 取得
+
+    var 機器序號=["T00000001", "T00000002", "T00000003", "T00000004",
+                 "T00000005", "T00000006", "T00000007", "T00000008",
+                 "T00000009"                 
+                ]; // 測試用，之後從 API 取得      
+    
+    // Append 店面名稱到個人資料中 預設常用健身房 選項
+    for (var i=0; i< 店面名稱.length; i++){
+      $("#預設常用健身房").append("<option value='"+店面名稱[i]+"'>"+店面名稱[i]+"</option>");
+    }
+    
     
     // checkInputParam() 和 checkUserIdExist() 都是在 functions.js 定義
     if (checkInputParam()) checkUserIdExist();

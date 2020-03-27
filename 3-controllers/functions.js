@@ -267,7 +267,7 @@ async function checkUserIdExist() {
     console.log("已經是會員");
     已經是會員 = true;
     
-    var userProfile = JSON.parse(res);
+    userProfile = JSON.parse(res);
     //console.log(userProfile);
 
     $("#formUserName").val(userProfile[0]);
@@ -279,9 +279,13 @@ async function checkUserIdExist() {
     $("#formUserHeight").val(userProfile[8]);
     $("#formUserWeight").val(userProfile[9]);        
     $("#formEmergencyContact").val(userProfile[10]);
-    $("#formEmergencyPhone").val(userProfile[11]);  
+    
+    // formEmergencyContact 挪來用為 常用預設健身房
+    預設常用健身房 = (userProfile[11]=="undefined")? "永和店":userProfile[11];
+    $("#預設常用健身房").val(預設常用健身房);  
     
     $("#LINE頭像").attr("src", userProfile[7]);
+    
     
 //    loadCourses = true;
 //    getCourseData(navDataSource);
@@ -319,11 +323,12 @@ async function 註冊會員() {
     "&Height="           + $("#formUserHeight").val()+
     "&Weight="           + $("#formUserWeight").val()+        
     "&EmergencyContact=" + $("#formEmergencyContact").val()+
-    "&EmergencyPhone="   + $("#formEmergencyPhone").val();       
+    "&EmergencyPhone="   + $("#預設常用健身房").val();  // 挪來用為 常用預設健身房     
   
   console.log(paramToSend); 
 
   var profile = "請確認會員資料:\n" +
+    "    預設常用健身房: " + $("#預設常用健身房").val() + "\n" +      
     "    會員姓名: " + $("#formUserName").val() + "\n" +
     "    會員姓別: " + $("#formUserGender").val() + "\n" +
     "    會員生日: " + $("#formUserBirth").val() + "\n" +          
@@ -367,6 +372,9 @@ async function 註冊會員() {
 
     if (res == "API:01 會員寫入成功" || res == "API:01 會員已存在" || "API:02 資料更新成功") {
       alert("資料更新成功，回到量測頁面");
+      $("#預設常用健身房標籤").text("打鐵健身 "+預設常用健身房); 
+      $("#所在健身房說明").text("如果目前不在 "+預設常用健身房+ " ，請到個人資料(首頁右上角圖示)修改預設常用健身房，再回來測量。");
+      checkUserIdExist();
       已經是會員 = true;
 //      loadCourses = false;
       // 顯示團課表格

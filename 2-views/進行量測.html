@@ -18,18 +18,16 @@
                                   background-color: black;
                                   "> 
 
-        <p style="font-size:18px; color: white; margin:20px">1. 請選擇 身體組成分析儀 所在的健身房</p>
-
-        <div id="店面" class="店面陣列">
-<!--
-          <a class="" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px" onclick="selectStore(0)">永和店</a> 
-          <a class="" style="font-size: 18px; color: white; background-color:gray; padding:10px;border-radius:8px" onclick="">板橋店</a> 
--->
+        <p style="font-size:18px; color: white; margin-top:20px; margin-left:20px">1. 請確認<b> 目前</b> 所在的健身房</p>
+        <p id="所在健身房說明" style="font-size:16px; color: gray; width:80%; margin-left:40px;; margin-bottom:5px"></p>
+        
+        <div id="店面" class="店面陣列" align="center">
+          <a id="預設常用健身房標籤" style="font-size: 18px; color: white; background-color:gray; padding:10px;width: 80%" onclick=""></a>        
         </div>           
 
-        <p style="font-size:18px; color: white; margin-left:20px; margin-top: 0px">2. 請按下按鈕，送出測量要求</p>      
+        <p style="font-size:18px; color: white; margin-left:20px; margin-top: 20px">2. 請按下按鈕，送出測量要求</p>      
         <div style="text-align: center">
-          <p id="測量限制" style="font-size:16px; color:gray; text-align:left; margin-left:40px;width:80%">**為讓更多人使用，距離上次量測須超過一小時，才能再度量測，謝謝您的合作。</p>         
+          <p id="測量限制" style="font-size:16px; color:gray; text-align:left; margin-left:40px;width:80%">為讓更多人使用，距離上次量測須超過一小時，才能再度量測，謝謝您的合作。</p>         
           <p id="上次測量時間" style="font-size:16px; color:gray; text-align:center">上次測量時間:</p>    
           <button id="開始測量按鈕" class="NotoSansFont" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">開始測量</button> 
           <button id="取消測量按鈕" class="NotoSansFont" style="margin-left: 50px; font-size: 18px; color: white; background-color:teal; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">取消測量</button>         
@@ -60,15 +58,7 @@
     </div>
     
     <script>
-      var 店面名稱=["永和店", "板橋店", "土城店", "錦州店",
-                   "三重店", "松山店", "府中店"                 
-                  ]; // 測試用，之後從 API 取得
-
-      var 機器序號=["T00000001", "T00000002", "T00000003", "T00000004",
-                   "T00000005", "T00000006", "T00000007", "T00000008",
-                   "T00000009"                 
-                  ]; // 測試用，之後從 API 取得      
-      
+        
       var 上次使用店面編號 = localStorage.getItem("上次使用店面編號") || 0; // if null then 0
       var 上次量測時間    = localStorage.getItem("上次量測時間") || 0; // if null then 0  
       
@@ -80,25 +70,27 @@
       
       function kendoViewReady() {
         console.log( "ready!" );
-                
-        for (var i=0; i<店面名稱.length;i++) {
-          
-          var 按鈕顏色 = (i==上次使用店面編號)?"red":"gray";
-          // 店面 0, 3, 6, 9, ...
-          if (i%3 == 0 || i%3 == 1 ) {
-            var storeToadd = '<a id="'+"店面"+i.toString()+'" style="margin-left:20px;font-size: 18px; color: white; background-color:'+按鈕顏色+'; padding:10px;border-radius:8px" onclick="selectStore('+i.toString()+')">'+店面名稱[i]+'</a>';
-            //console.log(storeToadd);
-            $("#店面").append(storeToadd);        
-          } else { // 店面 1,2,4,5,7,8,...
-            var storeToadd = '<a id="'+"店面"+i.toString()+'" style="margin-left:20px;font-size: 18px; color: white; background-color:'+按鈕顏色+'; padding:10px;border-radius:8px" onclick="selectStore('+i.toString()+')">'+店面名稱[i]+'</a>';
-            $("#店面").append(storeToadd);      
-            $("#店面").append("<br><br><br>");             
-          }          
-        }
         
-        if (店面名稱.length%3 != 2 ) {
-            $("#店面").append("<br><br><br>");   
-        }
+        $("#預設常用健身房標籤").text("打鐵健身 "+預設常用健身房); 
+        $("#所在健身房說明").text("如果目前不在 "+預設常用健身房+ " ，請到個人資料(首頁右上角圖示)修改預設常用健身房，再回來測量。");
+//        for (var i=0; i<店面名稱.length;i++) {
+//          
+//          var 按鈕顏色 = (i==上次使用店面編號)?"red":"gray";
+//          // 店面 0, 3, 6, 9, ...
+//          if (i%3 == 0 || i%3 == 1 ) {
+//            var storeToadd = '<a id="'+"店面"+i.toString()+'" style="margin-left:20px;font-size: 18px; color: white; background-color:'+按鈕顏色+'; padding:10px;border-radius:8px" onclick="selectStore('+i.toString()+')">'+店面名稱[i]+'</a>';
+//            //console.log(storeToadd);
+//            $("#店面").append(storeToadd);        
+//          } else { // 店面 1,2,4,5,7,8,...
+//            var storeToadd = '<a id="'+"店面"+i.toString()+'" style="margin-left:20px;font-size: 18px; color: white; background-color:'+按鈕顏色+'; padding:10px;border-radius:8px" onclick="selectStore('+i.toString()+')">'+店面名稱[i]+'</a>';
+//            $("#店面").append(storeToadd);      
+//            $("#店面").append("<br><br><br>");             
+//          }          
+//        }
+//        
+//        if (店面名稱.length%3 != 2 ) {
+//            $("#店面").append("<br><br><br>");   
+//        }
         
         var tmpTimeNow     = new Date(toISOStringWithTimeZone());
         var tmpTimeNowInMs = tmpTimeNow.getTime();
@@ -160,7 +152,7 @@
         }
                 
         
-        if (confirm("為了您的權益，請檢查是在打鐵健身 "+店面名稱[selectedStoreNum]+" 身體組成分析儀 序號:"+機器序號[selectedStoreNum]+"上進行量測。\n\n序號可在機器上查對")) { 
+        if (confirm("為了您的權益，請檢查是在打鐵健身 "+預設常用健身房+" 身體組成分析儀 序號:"+機器序號[selectedStoreNum]+"上進行量測。\n\n序號可在機器上查對")) { 
          $("#開始測量按鈕").attr("disabled", true);
          $("#開始測量按鈕").css("background-color", "gray");           
          $("#第三步Div").show();
@@ -176,19 +168,19 @@
        }
       }  
       
-      var measurementStatusMsg="接受資料 ...";
+      var measurementStatusMsg="接受資料";
       var measurementStatusMsgBank= [
         "請站上機器", "量測體重", "量測身體組成 50%", "量測身體組成 90%", "量測身體組成 完成", "資料上傳中", "資料上傳完成"
       ]
       
       function 啟動模擬機(){    
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[0]),  2000);   
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[1]),  4000);   
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[2]),  6000);        
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[3]),  8000);   
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[4]), 10000);   
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[5]), 12000);        
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[6]), 14000);    
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[0]),  1000);   
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[1]),  2000);   
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[2]),  3000);        
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[3]),  4000);   
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[4]),  5000);   
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[5]),  6000);        
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[6]),  7000);    
         
         //setTimeout( (() => clearInterval(checkStatusInterval)), 14100);           
       }
