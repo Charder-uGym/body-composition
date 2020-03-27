@@ -12,7 +12,7 @@
   
   <body>
 
-    <div data-role="view" data-init="initData"  data-title="這次量測報告" style="text-align: center;font-family: 'Noto Sans TC'" data-use-native-scrolling="true">
+    <div data-role="view" data-init="initData"  data-title="這次量測報告" style="text-align: center;font-family: 'Noto Sans TC'" data-use-native-scrolling="true" data-show="這次量測報告Ready">
   
       <header data-role="header">
         <div data-role="navbar" id="normal" class="km-accent">
@@ -42,8 +42,12 @@
       var inputParamString = hrefString.split("?");
       var inputParam = inputParamString[2].split("&")
       var reportId = inputParamString[inputParamString.length-1].split("=")[1];
+      $.loading.start("讀取量測資料");
       
-      console.log(reportId);
+      function 這次量測報告Ready(){
+        console.log(reportId);  
+      $.loading.end();        
+      }
     </script>
     
     <script>

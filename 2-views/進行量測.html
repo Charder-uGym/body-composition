@@ -30,7 +30,7 @@
           <p id="測量限制" style="font-size:16px; color:gray; text-align:left; margin-left:40px;width:80%">為讓更多人使用，距離上次量測須超過一小時，才能再度量測，謝謝您的合作。</p>         
           <p id="上次測量時間" style="font-size:16px; color:gray; text-align:center">上次測量時間:</p>    
           <button id="開始測量按鈕" class="NotoSansFont" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">開始測量</button> 
-          <button id="取消測量按鈕" class="NotoSansFont" style="margin-left: 50px; font-size: 18px; color: white; background-color:teal; padding:10px;border-radius:8px; border-style: none" onclick="送出要求測量()">取消測量</button>         
+          <button id="取消測量按鈕" class="NotoSansFont" style="margin-left: 50px; font-size: 18px; color: white; background-color:teal; padding:10px;border-radius:8px; border-style: none" onclick="取消測量()">取消測量</button>         
         </div>       
        
         <div id="第三步Div" style="display: none">
@@ -91,6 +91,10 @@
 //        if (店面名稱.length%3 != 2 ) {
 //            $("#店面").append("<br><br><br>");   
 //        }
+        
+        $("#開始測量按鈕").attr("disabled", false);       
+        $("#取消測量按鈕").attr("disabled", true);  
+        $("#取消測量按鈕").css("background-color", "gray");         
         
         var tmpTimeNow     = new Date(toISOStringWithTimeZone());
         var tmpTimeNowInMs = tmpTimeNow.getTime();
@@ -153,21 +157,32 @@
                 
         
         if (confirm("為了您的權益，請檢查是在打鐵健身 "+預設常用健身房+" 身體組成分析儀 序號:"+機器序號[selectedStoreNum]+"上進行量測。\n\n序號可在機器上查對")) { 
-         $("#開始測量按鈕").attr("disabled", true);
-         $("#開始測量按鈕").css("background-color", "gray");           
-         $("#第三步Div").show();
-         $("#測量訊息").text("接受資料");
-         console.log("call API 送出要求測量");
-
-         啟動模擬機();
-         $("#loadingProgressBar").data("kendoProgressBar").value(1);
-         checkStatusInterval = setInterval( checkMeasurementStatus, 1000);      
+          $("#開始測量按鈕").attr("disabled", true);
+          $("#開始測量按鈕").css("background-color", "gray"); 
+          
+          $("#第三步Div").show();
+          $("#測量訊息").text("接受資料");
+          console.log("call API 送出要求測量");
+                    
+          $("#取消測量按鈕").attr("disabled", false);  
+          $("#取消測量按鈕").css("background-color", "red");           
+        
+          啟動模擬機();
+          $("#loadingProgressBar").data("kendoProgressBar").value(1);
+          checkStatusInterval = setInterval( checkMeasurementStatus, 1000);      
            
-       } else {
+        } else {
           console.log("放棄測量");
-       }
+        }
       }  
       
+      function 取消測量(){
+        console.log("取消測量");
+        clearInterval(checkStatusInterval);        
+      }
+      
+      
+      //== 以下是模擬機
       var measurementStatusMsg="接受資料";
       var measurementStatusMsgBank= [
         "請站上機器", "量測體重", "量測身體組成 50%", "量測身體組成 90%", "量測身體組成 完成", "資料上傳中", "資料上傳完成"
@@ -225,7 +240,9 @@
           var nowDateTimeStr = toISOStringWithTimeZone();
           localStorage.setItem("上次量測時間", nowDateTimeStr);
           localStorage.setItem("上次使用店面編號", selectedStoreNum);
-          $("#查看報告Div").show();
+          $("#查看報告Div").show(); 
+          $("#取消測量按鈕").attr("disabled", true);  
+          $("#取消測量按鈕").css("background-color", "gray");              
         }
       }
 
