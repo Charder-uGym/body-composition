@@ -435,3 +435,16 @@ function 送出量測要求() {
   console.log("進行量測:"+$("#店面").val()+"-"+$("#機台").val()+"號機");
   app.navigate('2-views/進行量測.html');
 }
+
+function 顯示個人資料同意書() {
+  console.log("顯示個人資料同意書");
+  $("#formData").hide();
+  $("#個人資料使用Div").hide();
+  $("#個人資料同意書Div").show();
+}
+
+function 我知道了(){
+  $("#formData").show();
+  $("#個人資料使用Div").show();  
+  $("#個人資料同意書Div").hide();      
+}
