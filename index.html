@@ -315,8 +315,12 @@
     </header>
   </div>
 
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+ 
   <script>
-    var useLocalAPIs = false;
+    var useLocalAPIs = true;
   </script>
   <script src="3-controllers/functions.js"></script>
   <script src="1-models/data-process.js"></script>
@@ -365,6 +369,9 @@
     if (checkInputParam()) checkUserIdExist();
   
     //app.navigate('#forms');
+    
+
+  
         
   </script>
 </body>
