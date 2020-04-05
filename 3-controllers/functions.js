@@ -236,13 +236,13 @@ function callAPI(param, loadingMessage) {
     request.open('GET', apiSite +param, true);
 
     request.onload = function() {
-      $.loading.end();
+      if (loadingMessage!="") $.loading.end();
       //console.log(this.response);
 
       resolve(this.response);
     }
     // Send API request 
-    $.loading.start(loadingMessage);
+    if (loadingMessage!="") $.loading.start(loadingMessage);
 
     request.send();    
   });
@@ -254,7 +254,7 @@ async function checkUserIdExist() {
   $.loading.start('檢查是否已填寫必要資料');
   paramToSend = "?API=14" + "&UserId=" + userId[1];
   var res = await callAPI(paramToSend, '檢查是否已填寫必要資料');
-  $.loading.end();
+  //$.loading.end();
   
   if (res.substring(0,6) == "API:14") {
     alert("為了讓您更容易使用團體課程，挑戰賽及使用優惠券，請填寫必要資料");
@@ -282,10 +282,56 @@ async function checkUserIdExist() {
     
     // formEmergencyContact 挪來用為 常用預設健身房
     預設常用健身房 = (userProfile[11]=="undefined")? "永和店":userProfile[11];
-    $("#預設常用健身房").val(預設常用健身房);  
+    //$("#預設常用健身房").val(預設常用健身房);  
     
     $("#LINE頭像").attr("src", userProfile[7]);
     
+    // 讀取店面名稱和機器序號
+    paramToSend = "?API=30" + "&CustomerId=打鐵健身";
+    var res = await callAPI(paramToSend, '讀取店面名稱');
+    店面名稱 = JSON.parse(res);
+    console.log(店面名稱);
+
+    // Append 店面名稱到個人資料中 預設常用健身房 選項
+    for (var i=0; i< 店面名稱.length; i++){
+      $("#預設常用健身房").append("<option value='"+店面名稱[i]+"'>"+店面名稱[i]+"</option>");
+    } 
+    
+    $("#預設常用健身房").val(預設常用健身房); 
+
+    paramToSend = "?API=31" + "&CustomerId=打鐵健身&StoreId="+$("#預設常用健身房").val();      
+    var res = await callAPI(paramToSend, '讀取店面名稱');
+    機器序號 = res;
+    console.log(機器序號);    
+    
+    paramToSend = "?API=32" + "&UserId=" + userId[1];
+    var res = await callAPI(paramToSend, '讀取量測記錄');
+    var 所有量測數據=JSON.parse(res);
+    console.log(所有量測數據);    
+    
+    var dataTemp=[];
+    for (var i=0; i<所有量測數據.length; i++ ) {
+      var 卡片 = {
+        "量測記錄時間": 所有量測數據[i].量測時間,              
+        "綜合評價":    所有量測數據[i].HealthScore,
+        "量測紀錄圖片": 所有量測數據[i].PicUrl,              
+        "url": "2-views/量測報告.html?PicUrl="+所有量測數據[i].PicUrl,
+        "section": "A"             
+      };
+      dataTemp.push(卡片); 
+    }
+    
+    measurementSource.success(dataTemp);
+
+    if (dataTemp.length==0) {
+      $("#量測記錄title").text("尚無量測記錄");
+    }else {
+      $("#量測記錄title").text("量測記錄");
+    }     
+       
+    refresh=true;
+    
+    $.loading.end();
     
 //    loadCourses = true;
 //    getCourseData(navDataSource);
@@ -440,7 +486,7 @@ function 送出量測要求() {
     return 1;
   }
 
-  console.log("進行量測:"+$("#店面").val()+"-"+$("#機台").val()+"號機");
+  console.log("進行量測:"+"打鐵健身"+預設常用健身房);
   app.navigate('2-views/進行量測.html');
 }
 
