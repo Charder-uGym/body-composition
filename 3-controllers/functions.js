@@ -379,8 +379,8 @@ async function 註冊會員() {
     "    會員姓別: " + $("#formUserGender").val() + "\n" +
     "    會員生日: " + $("#formUserBirth").val() + "\n" +          
     "    會員身高: " + $("#formUserHeight").val() + " cm" +"\n" +          
-    "    會員體重: " + $("#formUserWeight").val() + " kg" +"\n" ;            
-//    "    會員電話: " + $("#formUserPhone").val() + "\n" +
+//    "    會員體重: " + $("#formUserWeight").val() + " kg" +"\n" +            
+    "    會員電話: " + $("#formUserPhone").val() + "\n";
 //    "    身分證號: " + $("#formUserID").val() + "\n" +
 //    "    會員地址: " + $("#formUserAddr").val() + "\n" +
 //    "    緊急聯絡人:" + $("#formEmergencyContact").val() + "\n" +       
