@@ -304,8 +304,9 @@ async function checkUserIdExist() {
     機器序號 = res;
     console.log(機器序號);    
     
-    paramToSend = "?API=32" + "&UserId=" + userId[1];
+    paramToSend = "?API=32" + "&UserId=" + $("#formUserPhone").val(); //userId[1];
     var res = await callAPI(paramToSend, '讀取量測記錄');
+    console.log(res);
     var 所有量測數據=JSON.parse(res);
     console.log(所有量測數據);    
     
