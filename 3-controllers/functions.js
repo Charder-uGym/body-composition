@@ -277,10 +277,12 @@ async function checkUserIdExist() {
     $("#formUserID").val(userProfile[4]);
     $("#formUserAddr").val(userProfile[5]);
     $("#formUserHeight").val(userProfile[8]);
-    $("#formUserWeight").val(userProfile[9]);        
-    $("#formEmergencyContact").val(userProfile[10]);
+    $("#formUserWeight").val(userProfile[9]);    
     
-    // formEmergencyContact 挪來用為 常用預設健身房
+    // formEmergencyContact 挪來用為 formUserEthnicity
+    $("#formUserEthnicity").val(userProfile[10]);
+    
+    // formEmergencyPhone 挪來用為 常用預設健身房
     預設常用健身房 = (userProfile[11]=="undefined")? "永和店":userProfile[11];
     //$("#預設常用健身房").val(預設常用健身房);  
     
@@ -369,8 +371,8 @@ async function 註冊會員() {
     "&PicURL="           + pictureUrl[1] +       
     "&Height="           + $("#formUserHeight").val()+
     "&Weight="           + $("#formUserWeight").val()+        
-    "&EmergencyContact=" + $("#formEmergencyContact").val()+
-    "&EmergencyPhone="   + $("#預設常用健身房").val();  // 挪來用為 常用預設健身房     
+    "&EmergencyContact=" + $("#formUserEthnicity").val()+  // 挪來用為 Ethnicity
+    "&EmergencyPhone="   + $("#預設常用健身房").val();       // 挪來用為 常用預設健身房     
   
   console.log(paramToSend); 
 
@@ -378,7 +380,8 @@ async function 註冊會員() {
     "    預設常用健身房: " + $("#預設常用健身房").val() + "\n" +      
     "    會員姓名: " + $("#formUserName").val() + "\n" +
     "    會員姓別: " + $("#formUserGender").val() + "\n" +
-    "    會員生日: " + $("#formUserBirth").val() + "\n" +          
+    "    會員生日: " + $("#formUserBirth").val() + "\n" +  
+    "    區域: "    + $("#formUserEthnicity").val() + "\n" +        
     "    會員身高: " + $("#formUserHeight").val() + " cm" +"\n" +          
 //    "    會員體重: " + $("#formUserWeight").val() + " kg" +"\n" +            
     "    會員電話: " + $("#formUserPhone").val() + "\n";
