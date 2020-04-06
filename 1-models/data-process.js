@@ -30,45 +30,39 @@ var measurementSource = new kendo.data.DataSource({
   //group: { field: "section" }
 })
 
-function 取得量測記錄(data) {
-  console.log("getting CourseHistory");
+async function 取得量測記錄(data) {
+  console.log("取得量測記錄");
   
-  var 所有量測數據 = [
-    {
-      "ReportId": "00000001",
-      "量測記錄時間": "量測時間: 2020-01-25 13:56",              
-      "綜合評價": "綜合評價: 74.5",
-      "量測紀錄圖片": "MA801半身T.png",              
-    },
-    {
-      "ReportId": "00000002",
-      "量測記錄時間": "量測時間: 2020-02-23 14:32",              
-      "綜合評價": "綜合評價: 78.5",
-      "量測紀錄圖片": "MA801半身T.png",              
-    }      
-  ];
-
-  var dataTemp=[];
-  for (var i=0; i<所有量測數據.length; i++ ) {
-    var 卡片 = {
-      "量測記錄時間": 所有量測數據[i].量測記錄時間,              
-      "綜合評價":    所有量測數據[i].綜合評價,
-      "量測紀錄圖片": 所有量測數據[i].量測紀錄圖片,              
-      "url": "2-views/量測報告.html?reportId="+所有量測數據[i].ReportId,
-      "section": "A"             
-    };
-    dataTemp.push(卡片); 
+  if (!refresh) {  
+    var dataTemp=[];
+    data.success(dataTemp);
+  } else {
+    paramToSend = "?API=32" + "&UserId=" + userId[1];
+    var res = await callAPI(paramToSend, '讀取量測記錄');
+    var 所有量測數據=JSON.parse(res);
+    console.log(所有量測數據);    
+    
+    var dataTemp=[];
+    for (var i=0; i<所有量測數據.length; i++ ) {
+      var 卡片 = {
+        "量測記錄時間": 所有量測數據[i].量測時間,              
+        "綜合評價":    所有量測數據[i].HealthScore,
+        "量測紀錄圖片": 所有量測數據[i].PicUrl,              
+        "url": "2-views/量測報告.html?PicUrl="+所有量測數據[i].PicUrl,
+        "section": "A"             
+      };
+      dataTemp.push(卡片); 
+    }
+    
+    data.success(dataTemp);    
   }
-
-  data.success(dataTemp);
-
+  
   if (dataTemp.length==0) {
     $("#量測記錄title").text("尚無量測記錄");
   }else {
     $("#量測記錄title").text("量測記錄");
   }  
-  
-  return;
+  //return;
 }
 
 function nullForNow(e) {

@@ -126,7 +126,7 @@
     <h3 class="NotoSansFont" style="margin-top: 2em; color: darkslategray; font-weight: bold">輸入參數發生錯誤，請洽管理員</h3>
   </div>
     
-  <div data-role="view" data-title="打鐵健身- 身體組成自動量測系統" style="font-family: 'Noto Sans TC'" id="mainDiv" data-layout="">
+  <div data-role="view" data-title="打鐵健身- 身體組成自動量測系統" style="font-family: 'Noto Sans TC'" id="mainDiv" data-layout="" data-reload="false">
     <header data-role="header">
       <div data-role="navbar" id="normal" class="km-accent">
 
@@ -196,7 +196,7 @@
         <div style="height: 15px"></div>
 -->
 
-        <ul data-role="listview" data-source="measurementSource" data-pull-to-refresh="true" data-template="nav-template" data-header-template="header-template" class="main-menu" style="opacity:0.95">
+        <ul id="紀錄List" data-role="listview" data-source="measurementSource" data-pull-to-refresh="true" data-template="nav-template" data-header-template="header-template" class="main-menu" style="opacity:0.95">
 
           <script type="text/x-kendo-template" id="header-template">
             <span class="km-icon km-#: value #"></span> #: value #
@@ -206,7 +206,7 @@
             <a href="#: url #" class="量測記錄卡片" >
               <img src="#: 量測紀錄圖片 #" width="50" height="50" style="float:left;margin-right:10px"/>          
               <p style="font-size:12px; color: black; margin-top:-8px"> #: 量測記錄時間 # </p>
-              <span style="font-size:16px; color: black; margin-top:-10px; font-weight:bold">#: 綜合評價 # </span>
+              <span style="font-size:16px; color: black; margin-top:-10px; font-weight:bold">綜合評價: #: 綜合評價 # </span>
               <span style="font-size:14px; color: black; margin-top:-10px; font-weight:bold">/100</span>
               <span style="font-size:16px; color: black; margin-top:-10px; font-weight:bold">分</span> 
             </a>
@@ -320,7 +320,7 @@
   <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
  
   <script>
-    var useLocalAPIs = false;
+    var useLocalAPIs = true;
   </script>
   <script src="3-controllers/functions.js"></script>
   <script src="1-models/data-process.js"></script>
@@ -347,32 +347,25 @@
     var inputParam = inputParamString.split("&");
     var displayName, userId, pictureUrl;
     var inputError = false;
+    var refresh = false;
     
     var 預設常用健身房 = "永和店";
-    
-    var 店面名稱=["永和店", "板橋店", "土城店", "錦州店",
-                 "三重店", "松山店", "府中店"                 
-                ]; // 測試用，之後從 API 取得
-
-    var 機器序號=["T00000001", "T00000002", "T00000003", "T00000004",
-                 "T00000005", "T00000006", "T00000007", "T00000008",
-                 "T00000009"                 
-                ]; // 測試用，之後從 API 取得      
-    
-    // Append 店面名稱到個人資料中 預設常用健身房 選項
-    for (var i=0; i< 店面名稱.length; i++){
-      $("#預設常用健身房").append("<option value='"+店面名稱[i]+"'>"+店面名稱[i]+"</option>");
-    }
-    
-    
+    var 店面名稱;
+    var 機器序號;
+    var 已經是會員;
+            
     // checkInputParam() 和 checkUserIdExist() 都是在 functions.js 定義
+    console.log("check User");
     if (checkInputParam()) checkUserIdExist();
+    
+        
+    // Move 讀取店面名稱和機器序號 into checkUserIdExist()
   
     //app.navigate('#forms');
-    
 
-  
-        
+    function aaaTest(){
+      console.log("aaatest");
+    }
   </script>
 </body>
 

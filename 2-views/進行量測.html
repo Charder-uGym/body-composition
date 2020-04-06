@@ -44,7 +44,7 @@
         
         <div id="查看報告Div" style="text-align: center; display: none">
         <div style="height:20px"></div>
-        <a class="" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px" onclick="app.navigate('2-views/量測報告-now.html?reportId=')">查看報告</a> 
+        <a class="" style="font-size: 18px; color: white; background-color:red; padding:10px;border-radius:8px" onclick="查看報告()">查看報告</a> 
         </div>
              
         <div style="height: 50px"></div>     
@@ -59,7 +59,7 @@
     
     <script>
         
-      var 上次使用店面編號 = localStorage.getItem("上次使用店面編號") || 0; // if null then 0
+      var 上次使用店面編號 = localStorage.getItem("上次使用店面編號") || 0; // 先不用到if null then 0
       var 上次量測時間    = localStorage.getItem("上次量測時間") || 0; // if null then 0  
       
       var 上次測量時間Str = (上次量測時間==0)?"2020-01-01T00:00:00+8:00":上次量測時間;
@@ -138,7 +138,7 @@
       }
       
       var checkStatusInterval;
-      function 送出要求測量(){
+      async function 送出要求測量(){
         console.log("送出要求測量", selectedStoreNum, 機器序號[selectedStoreNum]);
         
         // 檢查距離上次量測時間
@@ -156,7 +156,7 @@
         }
                 
         
-        if (confirm("為了您的權益，請檢查是在打鐵健身 "+預設常用健身房+" 身體組成分析儀 序號:"+機器序號[selectedStoreNum]+"上進行量測。\n\n序號可在機器上查對")) { 
+        if (confirm("為了您的權益，請檢查是在打鐵健身 "+預設常用健身房+" 身體組成分析儀 序號:"+機器序號+"上進行量測。\n\n序號可在機器上查對")) { 
           $("#開始測量按鈕").attr("disabled", true);
           $("#開始測量按鈕").css("background-color", "gray"); 
           
@@ -167,8 +167,15 @@
           $("#取消測量按鈕").attr("disabled", false);  
           $("#取消測量按鈕").css("background-color", "red");           
         
-          啟動模擬機();
-          $("#loadingProgressBar").data("kendoProgressBar").value(1);
+          paramToSend = "?API=20&UserId="+userId[1]+"&CustomerId=打鐵健身&StoreId="+預設常用健身房;
+          console.log(paramToSend);           
+          var res = await callAPI(paramToSend, '讀取店面名稱');
+          console.log(res); 
+          //店面名稱 = JSON.parse(res);
+         
+          
+//          啟動模擬機();
+//          $("#loadingProgressBar").data("kendoProgressBar").value(1);
           checkStatusInterval = setInterval( checkMeasurementStatus, 1000);      
            
         } else {
@@ -182,23 +189,101 @@
       }
       
       
-      //== 以下是模擬機
-      var measurementStatusMsg="接受資料";
-      var measurementStatusMsgBank= [
-        "請站上機器", "量測體重", "量測身體組成 50%", "量測身體組成 90%", "量測身體組成 完成", "資料上傳中", "資料上傳完成"
-      ]
+      var measurementStatusSet= [
+        "等待機器回應", "等待機器選擇", "等待機器要求資料", "等待機器確認資料", "等待機器登入", "等待啟動量測體重", "開始量測體重", "體重量測完成", "檢查級板", "檢查級板 OK", "開始身體組成量測", "身體組成量測完成"
+      ];
       
-      function 啟動模擬機(){    
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[0]),  1000);   
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[1]),  2000);   
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[2]),  3000);        
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[3]),  4000);   
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[4]),  5000);   
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[5]),  6000);        
-        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[6]),  7000);    
+      async function checkMeasurementStatus(){
         
-        //setTimeout( (() => clearInterval(checkStatusInterval)), 14100);           
+        paramToSend = "?API=21&UserId="+userId[1]+"&CustomerId=打鐵健身&StoreId="+預設常用健身房;
+        var res = await callAPI(paramToSend, '');
+        var 現在量測狀態=res;
+        console.log(現在量測狀態); 
+        $("#測量訊息").text(現在量測狀態);
+        
+        var pb = $("#loadingProgressBar").data("kendoProgressBar");
+        switch (現在量測狀態){
+          case "等待機器回應":
+            pb.value(5);
+            break;
+          case "等待機器選擇":
+            pb.value(10);
+            break;
+          case "等待機器要求資料":
+            pb.value(15);
+            break;
+          case "等待機器確認資料":
+            pb.value(20);
+            break;
+          case "等待機器登入":
+            pb.value(25);
+            break;
+          case "等待啟動量測體重":
+            pb.value(25);
+            break;
+          case "開始量測體重":
+            pb.value(30);
+            break;
+          case "體重量測完成":
+            pb.value(50);            
+            break;
+          case "檢查級板":
+            pb.value(55);
+            break;
+          case "檢查級板 OK":
+            pb.value(60);
+            break;
+          case "開始身體組成量測":
+            pb.value(65);
+            break;
+          case "身體組成量測完成":
+            pb.value(100);
+            clearInterval(checkStatusInterval);  
+                        
+            var nowDateTimeStr = toISOStringWithTimeZone();
+            localStorage.setItem("上次量測時間", nowDateTimeStr);
+            $("#查看報告Div").show(); 
+            $("#取消測量按鈕").attr("disabled", true);  
+            $("#取消測量按鈕").css("background-color", "gray");             
+            break;            
+          default:
+            console.log("未知量測狀態");
+            clearInterval(checkStatusInterval);           
+        }
       }
+        
+      async function 查看報告(){
+        console.log("查看報告");
+        app.navigate("#:back");
+        
+        paramToSend = "?API=32" + "&UserId=" + userId[1];
+        var res = await callAPI(paramToSend, '讀取量測記錄');
+        var 所有量測數據=JSON.parse(res);
+        console.log(所有量測數據);    
+
+        var dataTemp=[];
+        for (var i=0; i<所有量測數據.length; i++ ) {
+          var 卡片 = {
+            "量測記錄時間": 所有量測數據[i].量測時間,              
+            "綜合評價":    所有量測數據[i].HealthScore,
+            "量測紀錄圖片": 所有量測數據[i].PicUrl,              
+            "url": "2-views/量測報告.html?PicUrl="+所有量測數據[i].PicUrl,
+            "section": "A"             
+          };
+          dataTemp.push(卡片); 
+        }
+
+        measurementSource.success(dataTemp);
+
+        if (dataTemp.length==0) {
+          $("#量測記錄title").text("尚無量測記錄");
+        }else {
+          $("#量測記錄title").text("量測記錄");
+        }        
+        
+        
+      }
+      
       
       function toISOStringWithTimeZone() {
           var nowDate = new Date();        
@@ -218,33 +303,52 @@
               dif + pad(tzo / 60) +
               ':' + pad(tzo % 60);
       }
+       
+     
+      //== 以下是模擬機
+      var measurementStatusMsg="接受資料";
+      var measurementStatusMsgBank= [
+        "請站上機器", "量測體重", "量測身體組成 50%", "量測身體組成 90%", "量測身體組成 完成", "資料上傳中", "資料上傳完成"
+      ];
       
-      function checkMeasurementStatus(){
-        console.log(measurementStatusMsg);
-        $("#測量訊息").text(measurementStatusMsg);  
-        if (measurementStatusMsg == measurementStatusMsgBank[0]) var pbValue = 20;
-        if (measurementStatusMsg == measurementStatusMsgBank[1]) var pbValue = 40;
-        if (measurementStatusMsg == measurementStatusMsgBank[2]) var pbValue = 60;
-        if (measurementStatusMsg == measurementStatusMsgBank[3]) var pbValue = 70;
-        if (measurementStatusMsg == measurementStatusMsgBank[4]) var pbValue = 80;
-        if (measurementStatusMsg == measurementStatusMsgBank[5]) var pbValue = 90;        
-        if (measurementStatusMsg == measurementStatusMsgBank[6]) var pbValue = 100;            
+      function 啟動模擬機(){    
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[0]),  1000);   
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[1]),  2000);   
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[2]),  3000);        
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[3]),  4000);   
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[4]),  5000);   
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[5]),  6000);        
+        setTimeout( (() => measurementStatusMsg = measurementStatusMsgBank[6]),  7000);    
         
-        var pb = $("#loadingProgressBar").data("kendoProgressBar");
-        pb.value(pbValue);
-
-        
-        if (measurementStatusMsg == measurementStatusMsgBank[measurementStatusMsgBank.length-1]){
-          clearInterval(checkStatusInterval);
-          console.log("模擬完成");
-          var nowDateTimeStr = toISOStringWithTimeZone();
-          localStorage.setItem("上次量測時間", nowDateTimeStr);
-          localStorage.setItem("上次使用店面編號", selectedStoreNum);
-          $("#查看報告Div").show(); 
-          $("#取消測量按鈕").attr("disabled", true);  
-          $("#取消測量按鈕").css("background-color", "gray");              
-        }
+        //setTimeout( (() => clearInterval(checkStatusInterval)), 14100);           
       }
+        
+//      function checkMeasurementStatus(){
+//        console.log(measurementStatusMsg);
+//        $("#測量訊息").text(measurementStatusMsg);  
+//        if (measurementStatusMsg == measurementStatusMsgBank[0]) var pbValue = 20;
+//        if (measurementStatusMsg == measurementStatusMsgBank[1]) var pbValue = 40;
+//        if (measurementStatusMsg == measurementStatusMsgBank[2]) var pbValue = 60;
+//        if (measurementStatusMsg == measurementStatusMsgBank[3]) var pbValue = 70;
+//        if (measurementStatusMsg == measurementStatusMsgBank[4]) var pbValue = 80;
+//        if (measurementStatusMsg == measurementStatusMsgBank[5]) var pbValue = 90;        
+//        if (measurementStatusMsg == measurementStatusMsgBank[6]) var pbValue = 100;            
+//        
+//        var pb = $("#loadingProgressBar").data("kendoProgressBar");
+//        pb.value(pbValue);
+//
+//        
+//        if (measurementStatusMsg == measurementStatusMsgBank[measurementStatusMsgBank.length-1]){
+//          clearInterval(checkStatusInterval);
+//          console.log("模擬完成");
+//          var nowDateTimeStr = toISOStringWithTimeZone();
+//          localStorage.setItem("上次量測時間", nowDateTimeStr);
+//          localStorage.setItem("上次使用店面編號", selectedStoreNum);
+//          $("#查看報告Div").show(); 
+//          $("#取消測量按鈕").attr("disabled", true);  
+//          $("#取消測量按鈕").css("background-color", "gray");              
+//        }
+//      }
 
     </script>
     
