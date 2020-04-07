@@ -204,7 +204,6 @@
       ];
       
       async function checkMeasurementStatus(){
-        
         paramToSend = "?API=22&UserId="+userId[1]+"&CustomerId=打鐵健身&StoreId="+預設常用健身房;
         var res = await callAPI(paramToSend, '');
         var 現在量測狀態=res;
@@ -248,18 +247,20 @@
             break;
           case "身體組成量測完成":
             pb.value(100);
-            clearInterval(checkStatusInterval);  
-
-            // 移除已完成的 量測要求
-            paramToSend = "?API=23&UserId="+userId[1]+"&CustomerId=打鐵健身&StoreId="+預設常用健身房;
-            var res = await callAPI(paramToSend, '');            
-            console.log(res);
-            
+            clearInterval(checkStatusInterval);             
             var nowDateTimeStr = toISOStringWithTimeZone();
             localStorage.setItem("上次量測時間", nowDateTimeStr);
             $("#查看報告Div").show(); 
             $("#取消測量按鈕").attr("disabled", true);  
-            $("#取消測量按鈕").css("background-color", "gray");             
+            $("#取消測量按鈕").css("background-color", "gray");  
+            
+            // 移除已完成的 量測要求
+            // ugly fix 避免在 API 還在用 量測要求 時就刪除掉 
+            setTimeout(async function(){
+              paramToSend = "?API=23&UserId="+userId[1]+"&CustomerId=打鐵健身&StoreId="+預設常用健身房;
+              var res = await callAPI(paramToSend, '');            
+              console.log(res)}, 500);         
+            
             break;            
           default:
             console.log("未知量測狀態");
@@ -294,9 +295,7 @@
           $("#量測記錄title").text("尚無量測記錄");
         }else {
           $("#量測記錄title").text("量測記錄");
-        }        
-        
-        
+        }              
       }
       
       
