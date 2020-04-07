@@ -266,7 +266,7 @@
         console.log("查看報告");
         app.navigate("#:back");
         
-        paramToSend = "?API=32" + "&UserId=" + userId[1];
+        paramToSend = paramToSend = "?API=32" + "&UserId=" + $("#formUserPhone").val(); //userId[1];
         var res = await callAPI(paramToSend, '讀取量測記錄');
         var 所有量測數據=JSON.parse(res);
         console.log(所有量測數據);    
