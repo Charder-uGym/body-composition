@@ -329,6 +329,12 @@
  
   <script>
     var useLocalAPIs = true;
+    try {
+      console.log(process.env.useLocalAPIs);
+    }catch(e){
+      console.log(e);
+    }
+    
   </script>
   <script src="3-controllers/functions.js"></script>
   <script src="1-models/data-process.js"></script>
