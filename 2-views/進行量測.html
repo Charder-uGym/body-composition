@@ -262,13 +262,23 @@
               console.log(res)}, 500);         
             
             break;   
+            
           case "機台要求取消":
             clearInterval(checkStatusInterval);             
             alert("機台端取消量測"); 
             paramToSend = "?API=23&UserId="+userId[1]+"&CustomerId=打鐵健身&StoreId="+預設常用健身房;
             var res = await callAPI(paramToSend, ''); 
             console.log(res);
-            app.navigate("#:back");            
+            app.navigate("#:back");
+            
+          case "機台已有人在使用":
+            clearInterval(checkStatusInterval);             
+            alert("機台已有人在使用"); 
+            paramToSend = "?API=23&UserId="+userId[1]+"&CustomerId=打鐵健身&StoreId="+預設常用健身房;
+            var res = await callAPI(paramToSend, ''); 
+            console.log(res);
+            app.navigate("#:back");       
+            
           default:
             console.log("未知量測狀態");
             clearInterval(checkStatusInterval);           
